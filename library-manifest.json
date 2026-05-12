@@ -2,10 +2,10 @@
   "name": "Biblioteka Públika",
   "short_name": "Biblioteka",
   "description": "Bilingual library resources in Kriolu and English for the community.",
-  "start_url": "/",
+  "start_url": "https://somoscv.github.io/library-resource",
   "display": "standalone",
-  "theme_color": "#14532d",
-  "background_color": "#f4f1ea",
+  "theme_color": "#fff9dc",
+  "background_color": "#fff9dc",
   "orientation": "portrait",
   "icons": [
     {

@@ -4,6 +4,7 @@ const urlsToCache = [
   '/index.html',
   '/library-manifest.json',
   '/favicon.png',
+  '/background.jpg',
   '/library-logo.png',
   '/library-bg.mp4',
   'https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap',
