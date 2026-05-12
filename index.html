@@ -18,7 +18,7 @@
     <meta property="og:title" content="Library - Community Portal">
     <meta property="og:description" content="Library services in your language">
 
-    <link rel="manifest" href="/library-manifest.json">
+    <link rel="manifest" href="library-manifest.json">
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet">
@@ -1683,7 +1683,7 @@ body {
         // Register Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js')
+                navigator.serviceWorker.register('service-worker.js')
                     .then(reg => console.log('✅ Service Worker registered:', reg))
                     .catch(err => console.error('❌ Service Worker registration failed:', err));
             });
