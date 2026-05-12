@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en" translate="no" class="notranslate">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="google" content="notranslate">
+    <link rel="icon" type="image/png" href="library-logo.png">
+    <meta name="theme-color" content="#14532d">
+    <title>Biblioteka Públika — Your Bilingual Library Website, Plain and Simple</title>
+    <meta name="description" content="Get a complete bilingual library website. We do the tech, you just supply your photos and info. One price, no monthly fees.">
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-primary: #14532d;
+            --brand-primary-dark: #0b3a1f;
+            --brand-accent: #d4a017;
+            --bg-dark: #f4f1ea;
+            --bg-card: rgba(255, 255, 255, 0.94);
+            --text-light: #1f2937;
+            --text-muted: #5a6e7a;
+            --highlight-bg: #ecfdf5;
+            --shadow: rgba(20, 83, 45, 0.12);
+            --overlay-bg: rgba(20, 83, 45, 0.82);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { min-height: 100vh; overflow-x: hidden; }
+
+        .video-background {
+            position: fixed; top: 50%; left: 50%; min-width: 100%; min-height: 100%;
+            transform: translate(-50%, -50%); object-fit: cover; z-index: -2;
+        }
+        body {
+            font-family: 'Figtree', sans-serif; min-height: 100vh; display: flex;
+            align-items: center; justify-content: center; padding: 20px;
+            color: var(--text-light); position: relative; background: var(--bg-dark);
+        }
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--overlay-bg); z-index: -1;
+        }
+
+        .card {
+            max-width: 1300px; width: 100%; background: var(--bg-card);
+            backdrop-filter: blur(16px); border-radius: 40px; padding: 40px 36px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2), 0 0 40px rgba(20,83,45,0.3);
+            border: 2px solid var(--brand-accent);
+        }
+
+        .brand-logo { margin-bottom: 20px; }
+        .brand-logo img {
+            width: 90px; height: 90px; object-fit: contain; border-radius: 28px;
+            box-shadow: 0 8px 22px rgba(212,160,23,0.6);
+        }
+        .brand-name {
+            font-family: 'Dancing Script', cursive; font-size: 44px; font-weight: 700;
+            color: var(--brand-primary); text-shadow: 0 0 18px rgba(20,83,45,0.3);
+            margin-bottom: 8px; letter-spacing: 2px;
+        }
+        h1 {
+            font-size: 32px; font-weight: 800; color: var(--brand-primary-dark);
+            letter-spacing: -0.02em; margin: 8px 0 10px;
+        }
+        .subhead {
+            font-size: 18px; color: var(--text-muted); margin-bottom: 32px;
+            border-bottom: 2px dashed var(--brand-accent); display: inline-block; padding-bottom: 6px;
+        }
+
+        /* Cover photo (new) */
+        .cover-photo {
+            margin: 24px 0 36px 0;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px var(--shadow), 0 0 40px rgba(212,160,23,0.4);
+            border: 1px solid var(--brand-accent);
+        }
+        .cover-photo img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        .section-title {
+            font-size: 28px; font-weight: 700; color: var(--brand-primary);
+            margin: 44px 0 24px 0; border-left: 5px solid var(--brand-accent);
+            padding-left: 20px;
+        }
+
+        .stat-badge {
+            background: var(--highlight-bg); border: 1px solid var(--brand-accent);
+            padding: 18px 24px; border-radius: 48px; text-align: center; margin: 28px 0;
+            font-weight: 600; font-size: 1.1rem; color: var(--brand-primary-dark);
+        }
+
+        .grid-2col {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin: 28px 0;
+        }
+
+        .info-card {
+            background: rgba(244,241,234,0.85); border-radius: 28px; padding: 26px;
+            border: 1px solid var(--brand-accent); backdrop-filter: blur(4px);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .info-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 28px var(--shadow), 0 0 24px rgba(20,83,45,0.2);
+        }
+        .info-card h3 {
+            font-size: 1.6rem; color: var(--brand-primary); margin-bottom: 18px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .info-card p { margin: 12px 0; line-height: 1.5; color: var(--text-light); }
+
+        .list-styled { list-style: none; padding-left: 0; }
+        .list-styled li {
+            margin: 14px 0; display: flex; gap: 12px; align-items: flex-start;
+            font-size: 1rem; color: #1f2937;
+        }
+        .list-styled li i {
+            color: var(--brand-accent); margin-top: 3px; min-width: 22px;
+            font-size: 1.2rem; filter: drop-shadow(0 0 6px rgba(212,160,23,0.5));
+        }
+
+        .highlight-text {
+            background: var(--highlight-bg); border-radius: 40px; padding: 20px 28px; margin: 30px 0;
+            text-align: center; font-weight: 600; font-size: 1.2rem;
+            border-left: 4px solid var(--brand-accent); color: var(--brand-primary-dark);
+        }
+
+        .pricing-box {
+            background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(244,241,234,0.96));
+            border-radius: 32px; padding: 26px 24px; text-align: center;
+            border: 1px solid var(--brand-accent); box-shadow: 0 8px 22px var(--shadow), 0 0 18px rgba(20,83,45,0.3);
+        }
+        .pricing-box .price {
+            font-size: 2.6rem; font-weight: 800; color: var(--brand-primary);
+            margin: 12px 0; text-shadow: 0 0 18px rgba(20,83,45,0.3);
+        }
+
+        /* ========== CAROUSEL (library theme) ========== */
+        .carousel-wrapper {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            padding: 30px 0;
+            display: flex;
+            justify-content: center;
+        }
+        .carousel {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            cursor: grab;
+            user-select: none;
+            touch-action: pan-y pinch-zoom;
+        }
+        .carousel:active { cursor: grabbing; }
+        .carousel::before,
+        .carousel::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            width: 15%;
+            max-width: 120px;
+            height: 100%;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .carousel::before {
+            left: 0;
+            background: linear-gradient(to right, #f4f1ea 0%, transparent 100%);
+        }
+        .carousel::after {
+            right: 0;
+            background: linear-gradient(to left, #f4f1ea 0%, transparent 100%);
+        }
+        .carousel-track {
+            display: flex;
+            align-items: center;
+            width: max-content;
+            will-change: transform;
+        }
+        .carousel-item {
+            width: 160px;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8px;
+        }
+        .carousel-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 16px 12px;
+            border-radius: 24px;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(4px);
+            width: 100%;
+            border: 1px solid var(--brand-accent);
+        }
+        .carousel-card:hover {
+            transform: scale(1.03);
+            background: #fff;
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 18px rgba(20,83,45,0.3);
+        }
+        .carousel-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 999px;
+            object-fit: cover;
+            border: 2px solid var(--brand-primary);
+            background: #fff;
+            pointer-events: none;
+        }
+        .carousel-title {
+            margin-top: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--brand-primary);
+            max-width: 130px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .carousel-category {
+            margin-top: 6px;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Carousel Modal (library style) */
+        .carousel-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .carousel-modal-overlay.active { display: flex; }
+        .carousel-modal {
+            width: 90%;
+            max-width: 400px;
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 28px;
+            text-align: center;
+            border: 2px solid var(--brand-accent);
+            box-shadow: 0 0 40px rgba(20,83,45,0.5);
+        }
+        .carousel-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 24px;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--brand-primary);
+            transition: 0.2s;
+        }
+        .carousel-modal-close:hover { color: var(--brand-accent); }
+        .carousel-modal img {
+            width: 100px;
+            height: 100px;
+            border-radius: 999px;
+            object-fit: cover;
+            margin-bottom: 16px;
+            border: 2px solid var(--brand-primary);
+        }
+        .carousel-modal h2 {
+            color: var(--brand-primary);
+            margin-bottom: 8px;
+            font-size: 1.6rem;
+        }
+        .carousel-modal p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .bottom-cover {
+            margin-top: 48px; border-radius: 28px; overflow: hidden;
+            box-shadow: 0 12px 28px var(--shadow), 0 0 30px rgba(20,83,45,0.3);
+            border: 1px solid var(--brand-accent);
+        }
+        .bottom-cover img { width: 100%; height: auto; display: block; }
+
+        .footer-note {
+            font-size: 0.85rem; text-align: center; margin-top: 48px; padding-top: 24px;
+            border-top: 1px solid var(--brand-accent); color: var(--text-muted);
+        }
+
+        .text-size-control {
+            position: fixed; bottom: 24px; right: 24px; z-index: 1100;
+            background: var(--highlight-bg); border-radius: 50%; box-shadow: 0 4px 16px rgba(20,83,45,0.6);
+            width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+            border: 1px solid var(--brand-accent); cursor: pointer; transition: 0.2s;
+            color: var(--brand-primary); font-size: 1.2rem;
+        }
+        .text-size-control:hover { background: var(--brand-accent); color: white; box-shadow: 0 0 20px rgba(212,160,23,0.8); }
+
+        body.large-text { font-size: 1.2rem; }
+        body.large-text .card, body.large-text .info-card, body.large-text p, body.large-text li { font-size: 1.2rem; }
+        body.large-text h1 { font-size: 2.4rem; }
+        body.large-text .brand-name { font-size: 3.2rem; }
+        body.large-text .section-title { font-size: 2rem; }
+        body.large-text .stat-badge { font-size: 1.3rem; }
+        body.large-text .pricing-box .price { font-size: 2.8rem; }
+
+        @media (max-width: 860px) {
+            .grid-2col { grid-template-columns: 1fr; gap: 20px; }
+            .card { padding: 24px 20px; }
+            h1 { font-size: 26px; }
+            .section-title { font-size: 24px; }
+            .brand-name { font-size: 36px; }
+            .carousel-item { width: 130px; }
+            .carousel-image { width: 65px; height: 65px; }
+            .carousel::before, .carousel::after { width: 12%; }
+        }
+    </style>
+</head>
+<body>
+    <video class="video-background" autoplay muted playsinline aria-hidden="true">
+        <source src="library-bg.mp4" type="video/mp4">
+        <img src="library-logo.png" alt="background image" aria-hidden="true">
+    </video>
+
+    <main style="width:100%; display:flex; justify-content:center;">
+        <div class="card">
+            <header>
+                <div class="brand-logo"><a href="#" aria-label="Home"><img src="library-logo.png" alt="Biblioteka Públika logo"></a></div>
+                <div class="brand-name">Biblioteka Públika</div>
+                <h1>What You're Getting — A Bilingual Library Website That Works</h1>
+                <div class="subhead">Kriolu / English · Fully Accessible · Static Site · Ready for Your Info</div>
+            </header>
+
+            <!-- NEW TOP COVER PHOTO (like handyman proposal) -->
+            <div class="cover-photo">
+                <img src="cover.png" alt="Biblioteka Públika banner: BU BIBLIOTEKA. BU KOMUNIDADI." onerror="this.style.display='none'">
+            </div>
+
+            <div class="stat-badge">
+                <i class="fas fa-clipboard-list"></i> <strong>📌 This is a real bilingual website, already built.</strong> All you need to do is give us your photos, service details, library hours, and a few community reviews. We'll put them in, and your site goes live in Kriolu and English. Includes your domain, hosting, and a one‑page cheat sheet. No monthly bills.
+            </div>
+
+            <!-- CAROUSEL SECTION (library partners / community groups) -->
+            <div class="section-title"><i class="fas fa-handshake"></i> Our Community Partners</div>
+            <div class="carousel-wrapper">
+                <div class="carousel" id="libraryCarousel">
+                    <div class="carousel-track" id="carouselTrack"></div>
+                </div>
+            </div>
+
+                <!-- NEW TOP COVER PHOTO (like handyman proposal) -->
+            <div class="cover-photo">
+                <img src="library-banner-133.png" alt="Biblioteka Públika banner: BU BIBLIOTEKA. BU KOMUNIDADI." onerror="this.style.display='none'">
+            </div>
+
+
+            <div class="section-title">📋 What's Included</div>
+            <div class="grid-2col">
+                <div class="info-card">
+                    <h3><i class="fas fa-code"></i> The Website Itself</h3>
+                    <p>We already built the site. It looks great on phones, tablets, and computers. Here's what's in it:</p>
+                    <ul class="list-styled">
+                        <li><i class="fas fa-language"></i> <strong>Full bilingual toggle</strong> — every service page is already built in both Kriolu and English, with dummy text ready to be replaced.</li>
+                        <li><i class="fas fa-universal-access"></i> <strong>Easy for everyone</strong> — a large text button for patrons who need it, semantic HTML, and everything works without a mouse.</li>
+                        <li><i class="fas fa-file-alt"></i> <strong>Eight interactive service sections already set up</strong> — Library Card, Computers & Wi‑Fi, Events & Programs, Study Rooms, Language Learning, Job Resources, Health Information, Policies & Hours.</li>
+                        <li><i class="fas fa-plug"></i> <strong>Built‑in tools (no extra cost)</strong> — contact form, events calendar, map, and testimonial display. Use them or not, they're free.</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3><i class="fas fa-globe"></i> Domain & Hosting</h3>
+                    <p>We take care of all the tech stuff.</p>
+                    <ul class="list-styled">
+                        <li><i class="fas fa-registered"></i> <strong>Your domain and hosting are included</strong> — I register the domain in your library's name and keep it running. You don't have to mess with settings.</li>
+                        <li><i class="fas fa-file-pdf"></i> <strong>One‑page cheat sheet</strong> — on launch day you get a simple reference: your website address, where inquiries go, and how the bilingual toggle works.</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>You own it all</strong> — the site and the domain are yours. No contracts, no monthly fees.</li>
+                    </ul>
+                </div>
+            </div>
+    <!-- NEW TOP COVER PHOTO (like handyman proposal) -->
+            <div class="cover-photo">
+                <img src="library-banner-4.png" alt="Biblioteka Públika banner: BU BIBLIOTEKA. BU KOMUNIDADI." onerror="this.style.display='none'">
+            </div>
+
+            <div class="section-title">🖥️ Pages Already Built, Just Waiting for Your Info</div>
+            <div class="grid-2col">
+                <div class="info-card">
+                    <h3><i class="fas fa-layer-group"></i> Library Service Modals</h3>
+                    <ul class="list-styled">
+                        <li><i class="fas fa-id-card"></i> <strong>Library Card</strong> — step‑by‑step guide with dummy steps, waiting for your real process.</li>
+                        <li><i class="fas fa-desktop"></i> <strong>Computers & Wi‑Fi</strong> — placeholder specs and rules. We'll fill in your actual speeds and policies.</li>
+                        <li><i class="fas fa-calendar-alt"></i> <strong>Events & Programs</strong> — sample events for kids, adults, and seniors. We'll put in your real programmes and dates.</li>
+                        <li><i class="fas fa-door-open"></i> <strong>Study Rooms</strong> — dummy reservation steps and equipment lists. We'll switch to your real details.</li>
+                        <li><i class="fas fa-language"></i> <strong>Language Learning</strong> — placeholder English & Kriolu classes with schedules. We'll update with your actual offerings.</li>
+                        <li><i class="fas fa-briefcase"></i> <strong>Job Resources</strong> — sample job search tips, resume workshops, and online links. We'll tailor to your community.</li>
+                        <li><i class="fas fa-heartbeat"></i> <strong>Health Information</strong> — dummy local health resources. We'll add your real clinics and programmes.</li>
+                        <li><i class="fas fa-shield-alt"></i> <strong>Policies & Hours</strong> — general rules, computer rules, loan rules ready. We'll replace with your official policies.</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3><i class="fas fa-phone"></i> About & Contact Page</h3>
+                    <ul class="list-styled">
+                        <li><i class="fas fa-landmark"></i> <strong>About the library</strong> — placeholder text ready. We'll rewrite it to sound like you.</li>
+                        <li><i class="fas fa-clock"></i> <strong>Your real hours, phone, email, and address</strong> will go in.</li>
+                        <li><i class="fas fa-quote-right"></i> <strong>Two testimonial slots</strong> with fictional names — we'll drop in real quotes from your community.</li>
+                        <li><i class="fas fa-thumbs-up"></i> <strong>A "Why Choose Us" section</strong> we can tailor to your library's strengths.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-text">
+                <i class="fas fa-eye"></i> <strong>You're getting a real, working website.</strong> I built it with dummy text so you can see exactly what you'll get. All that's left is to put in your actual information — photos, services, hours, reviews. That's covered in the price.
+            </div>
+                <!-- NEW TOP COVER PHOTO (like handyman proposal) -->
+            <div class="cover-photo">
+                <img src="library-banner-121.png" alt="Biblioteka Públika banner: BU BIBLIOTEKA. BU KOMUNIDADI." onerror="this.style.display='none'">
+            </div>
+
+
+            <div class="section-title">⏱️ How Long It Takes</div>
+            <div class="grid-2col">
+                <div class="info-card">
+                    <h3><i class="far fa-calendar-alt"></i> Week 1 — Information Swap</h3>
+                    <ul class="list-styled">
+                        <li><i class="fas fa-check-circle"></i> I register your domain and set up hosting.</li>
+                        <li><i class="fas fa-check-circle"></i> You send me your photos, service details, contact info, and reviews.</li>
+                        <li><i class="fas fa-check-circle"></i> I put all your real info into the site, in both Kriolu and English.</li>
+                        <li><i class="fas fa-check-circle"></i> You see a first draft on a private link.</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3><i class="far fa-calendar-alt"></i> Week 2 — Finishing Touches &amp; Go Live</h3>
+                    <ul class="list-styled">
+                        <li><i class="fas fa-check-circle"></i> Any last photos or text changes.</li>
+                        <li><i class="fas fa-check-circle"></i> You review, I make final tweaks.</li>
+                        <li><i class="fas fa-check-circle"></i> I test the site to make sure it works on all devices and browsers.</li>
+                        <li><i class="fas fa-rocket"></i> <strong>We launch your site and send you the one‑page cheat sheet.</strong></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="highlight-text">
+                <i class="fas fa-clock"></i> Total time: <strong>7–10 business days</strong> after we shake hands. Faster if you have your stuff ready. Rush jobs possible.
+            </div>
+
+            <div class="section-title">💰 Price</div>
+            <div class="grid-2col" style="margin-bottom: 20px;">
+                <div class="pricing-box">
+                    <i class="fas fa-laptop-code" style="font-size: 2rem; color: var(--brand-accent);"></i>
+                    <div class="price">$3,000 USD</div>
+                    <p>Everything: domain, hosting, the already‑built bilingual website, filling it with your content, testing, launching, cheat sheet.</p>
+                    <small><i class="fas fa-check-circle"></i> One payment. No monthly bills. No surprises.</small>
+                </div>
+                <div class="pricing-box">
+                    <i class="fas fa-dollar-sign" style="font-size: 2rem; color: var(--brand-accent);"></i>
+                    <div class="price">Domain + Hosting</div>
+                    <p>Your domain and hosting are included. It's registered in your library's name so you own it. No monthly payments. (We keep it simple — a straightforward .org address works best.)</p>
+                    <small><i class="fas fa-handshake"></i> No markup, no maintenance contracts, no surprise fees.</small>
+                </div>
+                      <div class="pricing-box">
+                    <i class="fas fa-wrench" style="font-size: 2rem; color: var(--brand-accent);"></i>
+                    <div class="price"></div>
+                        <!--                    <p>Your domain and hosting are included. It's registered in your library's name so you own it. No monthly payments. (We keep it simple — a straightforward .org address works best.)</p>-->
+                    <small><i class="fas fa-star"></i> We will email you when the domain is soon to expire. The library will be responsible for renewing it.</small>
+                </div>
+            </div>
+
+            <div class="section-title">🔄 Ongoing Help (Optional)</div>
+            <div class="grid-2col">
+                <div class="info-card">
+                    <h3><i class="fas fa-hourglass-half"></i> Pay‑as‑you‑go</h3>
+                    <ul class="list-styled">
+                        <li><i class="fas fa-dollar-sign"></i> <strong>$75 an hour</strong>, billed in 15‑minute chunks.</li>
+                        <li><i class="fas fa-edit"></i> Small text changes, adding a new service page, design adjustments.</li>
+                        <li><i class="fas fa-clock"></i> I usually get back to you within one business day.</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3><i class="fas fa-hand-holding-usd"></i> Yearly Retainer</h3>
+                    <ul class="list-styled">
+                        <li><i class="fas fa-check-circle"></i> <strong>$400 a year</strong> for up to 6 hours of work. (Unused hours don't roll over.)</li>
+                        <li><i class="fas fa-headset"></i> You get front‑of‑the‑line email help and a yearly check to keep the site easy to use.</li>
+                    </ul>
+                    <p style="margin-top: 12px;">No pressure. Choose either option after we launch, or stick with the one‑time price.</p>
+                </div>
+            </div>
+
+            <div class="stat-badge">
+                <i class="fas fa-cogs"></i> <strong>Note:</strong> The site can grow later. If you ever want to add a full content management system so staff can edit pages themselves, we can talk about that as a separate project. For now, this proposal is just for the website.
+            </div>
+
+            <div class="bottom-cover">
+                <img src="libkrary-banner-77.png" alt="Biblioteka Públika banner: BU BIBLIOTEKA. BU KOMUNIDADI." loading="lazy">
+            </div>
+
+            <div class="footer-note">
+                ✅ Everything delivered finished. You own the website and the domain.
+            </div>
+        </div>
+    </main>
+
+    <!-- Carousel Modal (separate from main lightbox) -->
+    <div id="carouselModalOverlay" class="carousel-modal-overlay">
+        <div class="carousel-modal">
+            <div class="carousel-modal-close" id="carouselModalClose">✕</div>
+            <img id="carouselModalImage" src="" alt="">
+            <h2 id="carouselModalTitle"></h2>
+            <p id="carouselModalCategory"></p>
+        </div>
+    </div>
+
+    <div class="text-size-control" id="text-size-toggle" title="Toggle larger text" aria-label="Toggle larger text">
+        <i class="fas fa-text-height"></i>
+    </div>
+
+    <script>
+        (function() {
+            // Text size toggle
+            const body = document.body;
+            const textSizeBtn = document.getElementById('text-size-toggle');
+            if (textSizeBtn) {
+                textSizeBtn.addEventListener('click', () => {
+                    body.classList.toggle('large-text');
+                    localStorage.setItem('largeText', body.classList.contains('large-text'));
+                });
+                if (localStorage.getItem('largeText') === 'true') body.classList.add('large-text');
+            }
+
+            // ========== INFINITE CENTERED CAROUSEL CLASS ==========
+            class InfiniteCenteredCarousel {
+                constructor({ container, items = [], speed = 0.35 }) {
+                    this.container = document.querySelector(container);
+                    this.track = this.container.querySelector(".carousel-track");
+                    this.originalItems = items;
+                    this.items = [...items, ...items, ...items];
+                    this.speed = speed;
+                    this.currentX = 0;
+                    this.dragging = false;
+                    this.dragStarted = false;
+                    this.startX = 0;
+                    this.startTranslate = 0;
+                    this.halfWidth = 0;
+                    this.dragThreshold = 5;
+                    this.raf = null;
+                    this.render();
+                    requestAnimationFrame(() => {
+                        this.measure();
+                        this.currentX = -this.halfWidth;
+                        this.bindEvents();
+                        this.animate();
+                    });
+                }
+
+                render() {
+                    this.track.innerHTML = "";
+                    this.items.forEach(item => {
+                        const slide = document.createElement("div");
+                        slide.className = "carousel-item";
+                        slide.innerHTML = `
+                            <div class="carousel-card">
+                                <img class="carousel-image" src="${item.image}" alt="${item.name}" draggable="false" onerror="this.src='https://picsum.photos/id/20/200/200'">
+                                <div class="carousel-title">${item.name}</div>
+                                <div class="carousel-category">${item.category}</div>
+                            </div>
+                        `;
+                        slide.addEventListener("click", (e) => {
+                            if (this.dragStarted || this.dragging) return;
+                            this.openModal(item);
+                        });
+                        this.track.appendChild(slide);
+                    });
+                }
+
+                measure() {
+                    this.halfWidth = this.track.scrollWidth / 3;
+                }
+
+                normalize() {
+                    if (this.currentX <= -(this.halfWidth * 2)) this.currentX += this.halfWidth;
+                    if (this.currentX >= 0) this.currentX -= this.halfWidth;
+                }
+
+                animate = () => {
+                    if (!this.dragging) this.currentX -= this.speed;
+                    this.normalize();
+                    this.track.style.transform = `translate3d(${this.currentX}px, 0, 0)`;
+                    this.raf = requestAnimationFrame(this.animate);
+                };
+
+                onDown(x) {
+                    this.dragging = true;
+                    this.dragStarted = false;
+                    this.startX = x;
+                    this.startTranslate = this.currentX;
+                }
+
+                onMove(x) {
+                    if (!this.dragging) return;
+                    const delta = x - this.startX;
+                    if (Math.abs(delta) > this.dragThreshold) this.dragStarted = true;
+                    if (this.dragStarted) {
+                        this.currentX = this.startTranslate + delta;
+                        this.normalize();
+                    }
+                }
+
+                onUp() {
+                    this.dragging = false;
+                    setTimeout(() => { this.dragStarted = false; }, 50);
+                }
+
+                bindEvents() {
+                    window.addEventListener("resize", () => this.measure());
+                    this.container.addEventListener("mousedown", (e) => {
+                        if (e.button !== 0) return;
+                        e.preventDefault();
+                        this.onDown(e.clientX);
+                    });
+                    window.addEventListener("mousemove", (e) => this.onMove(e.clientX));
+                    window.addEventListener("mouseup", () => this.onUp());
+                    this.container.addEventListener("touchstart", (e) => {
+                        if (e.touches.length === 1) this.onDown(e.touches[0].clientX);
+                    }, { passive: true });
+                    this.container.addEventListener("touchmove", (e) => {
+                        if (e.touches.length === 1) this.onMove(e.touches[0].clientX);
+                    }, { passive: true });
+                    this.container.addEventListener("touchend", () => this.onUp());
+                }
+
+                openModal(item) {
+                    document.getElementById("carouselModalImage").src = item.image;
+                    document.getElementById("carouselModalTitle").innerText = item.name;
+                    document.getElementById("carouselModalCategory").innerText = item.category;
+                    document.getElementById("carouselModalOverlay").classList.add("active");
+                }
+
+                closeModal() {
+                    document.getElementById("carouselModalOverlay").classList.remove("active");
+                }
+            }
+
+            // Carousel items (library partners – feel free to replace)
+            const carouselItems = [
+                { id: 1, name: "Escola +", category: "Education Partner", image: "https://picsum.photos/id/20/200/200" },
+                { id: 2, name: "Câmara Municipal", category: "City Support", image: "https://picsum.photos/id/30/200/200" },
+                { id: 3, name: "Cabo Verde Leitura", category: "Literacy Program", image: "https://picsum.photos/id/40/200/200" },
+                { id: 4, name: "Associação Juvenil", category: "Youth Services", image: "https://picsum.photos/id/50/200/200" },
+                { id: 5, name: "TechCV", category: "Digital Inclusion", image: "https://picsum.photos/id/60/200/200" },
+                { id: 6, name: "Fundação Cultural", category: "Arts & Culture", image: "https://picsum.photos/id/64/200/200" },
+                { id: 7, name: "Saúde Komunitáriu", category: "Public Health", image: "https://picsum.photos/id/66/200/200" },
+                { id: 8, name: "Emprego Já", category: "Job Resources", image: "https://picsum.photos/id/26/200/200" }
+            ];
+
+            // Initialize the carousel
+            new InfiniteCenteredCarousel({
+                container: "#libraryCarousel",
+                items: carouselItems,
+                speed: 0.35
+            });
+
+            // Carousel modal close handlers
+            const modalOverlay = document.getElementById("carouselModalOverlay");
+            const modalClose = document.getElementById("carouselModalClose");
+            modalClose.addEventListener("click", () => modalOverlay.classList.remove("active"));
+            modalOverlay.addEventListener("click", (e) => {
+                if (e.target === modalOverlay) modalOverlay.classList.remove("active");
+            });
+        })();
+    </script>
+</body>
+</html>

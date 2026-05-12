@@ -1,0 +1,1733 @@
+<!DOCTYPE html>
+<html lang="kea" translate="no" class="notranslate">
+<head>
+    <meta name="google" content="notranslate">
+    <meta http-equiv="Content-Language" content="kea">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta name="csrf-token" content="library-somos">
+
+    <title data-i18n="page_title">Biblioteka Públika - Recursos Komunidadi | Library Resources</title>
+    <meta name="title" content="Library - Community Resources">
+    <meta name="description" content="Bilingual library services, programs, computers, study rooms, and community information in Kriolu and English.">
+    <meta name="keywords" content="library, multilingual, Kriolu, Cape Verde, immigrant services, passport, computer access">
+    <meta name="theme-color" content="#1a365d">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Library - Community Portal">
+    <meta property="og:description" content="Library services in your language">
+
+    <link rel="manifest" href="/library-manifest.json">
+
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+       :root {
+            --library-primary: #14532d;
+            --library-primary-dark: #0b3a1f;
+            --library-accent: #d4a017;
+            --library-accent-dark: #9a7410;
+            --library-bg: #f4f1ea;
+            --library-light-bg: #ffffffd3;
+            --library-text: #1f2937;
+            --library-muted: #6b7280;
+            --library-border: #d6d3d1;
+            --library-highlight-bg: #ecfdf5;
+            --library-highlight-border: #22c55e;
+            --library-button-text: #ffffff;
+            --library-shadow: rgba(20, 83, 45, 0.12);
+            --modal-overlay-bg: rgba(15, 23, 42, 0.72);
+            --library-gradient: linear-gradient(135deg, #14532d 0%, #1f7a46 100%);
+            --library-gold-gradient: linear-gradient(135deg, #d4a017 0%, #f4c542 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Figtree', sans-serif;
+            background: var(--library-bg);
+            color: var(--library-text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem 1.5rem;
+            position: relative;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        body.large-text {
+            font-size: 1.2rem;
+        }
+        body.large-text .card,
+        body.large-text .modal-content,
+        body.large-text p,
+        body.large-text li,
+        body.large-text button {
+            font-size: 1.2rem;
+        }
+        body.large-text h1 { font-size: 2.4rem; }
+        body.large-text .section-title { font-size: 1.8rem; }
+
+        body.high-contrast {
+            background: #000000;
+            color: #ffffff;
+        }
+        body.high-contrast .card,
+        body.high-contrast .modal-content {
+            background: #111111;
+            border: 2px solid #ffff00;
+        }
+        body.high-contrast .button,
+        body.high-contrast .lang-btn {
+            background: #000000;
+            color: #ffffff;
+            border-color: #ffffff;
+        }
+        body.high-contrast .button i,
+        body.high-contrast .modal-header i {
+            color: #ffff00;
+        }
+        body.high-contrast .modal-header {
+            background: #000000;
+            border-bottom: 2px solid #ffff00;
+            color: #ffff00;
+        }
+        body.high-contrast .close-modal {
+            color: #ffff00;
+        }
+        body.high-contrast .stat-badge {
+            background: #222222;
+            border-left-color: #ffff00;
+        }
+        body.high-contrast .video-background {
+            opacity: 0;
+        }
+
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 1;
+        }
+
+        .card {
+            max-width: 1100px;
+            width: 100%;
+            background: var(--library-light-bg);
+            backdrop-filter: blur(8px);
+            border-radius: 32px;
+            box-shadow: 0 12px 32px var(--library-shadow);
+            padding: 2.5rem 2rem;
+            margin-top: 2rem;
+            border: 1px solid var(--library-border);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .brand-logo img {
+            height: 28vh;
+            width: auto;
+            margin-bottom: 0.0rem;
+        }
+
+        .language-switcher {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .lang-btn {
+            background: var(--library-light-bg);
+            border: 1px solid var(--library-border);
+            border-radius: 40px;
+            padding: 0.6rem 1.2rem;
+            font-family: 'Figtree', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--library-text);
+            transition: all 0.2s;
+        }
+
+        .lang-btn:hover {
+            border-color: var(--library-primary);
+            background: var(--library-highlight-bg);
+        }
+
+        .lang-dropdown {
+            display: none;
+            position: absolute;
+            top: 110%;
+            right: 0;
+            background: var(--library-light-bg);
+            border: 1px solid var(--library-border);
+            border-radius: 16px;
+            box-shadow: 0 8px 20px var(--library-shadow);
+            z-index: 100;
+            min-width: 180px;
+        }
+
+        .lang-dropdown.show {
+            display: block;
+        }
+
+        .lang-dropdown a {
+            display: block;
+            padding: 0.7rem 1.2rem;
+            color: var(--library-text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .lang-dropdown a:hover {
+            background: var(--library-highlight-bg);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--library-primary);
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .subhead {
+            font-size: 1.1rem;
+            color: var(--library-muted);
+            font-weight: 400;
+        }
+
+        .buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.2rem;
+            margin: 2rem 0;
+        }
+
+        .button {
+            background: var(--library-light-bg);
+            border: 2px solid var(--library-border);
+            border-radius: 20px;
+            padding: 1.2rem 1rem;
+            font-family: 'Figtree', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--library-text);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-align: left;
+            box-shadow: 0 2px 8px var(--library-shadow);
+        }
+
+        .button:hover {
+            border-color: var(--library-primary);
+            background: var(--library-highlight-bg);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+        }
+
+        .button i {
+            color: var(--library-primary);
+            font-size: 1.5rem;
+            width: 2rem;
+            text-align: center;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-overlay-bg);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--library-light-bg);
+            border-radius: 28px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .modal-header {
+            background: var(--library-primary);
+            color: white;
+            padding: 1.2rem 1.8rem;
+            border-radius: 28px 28px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.6rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 0 0.5rem;
+            line-height: 1;
+        }
+
+        .close-modal:hover {
+            opacity: 0.8;
+        }
+
+        .modal-body {
+            padding: 1.8rem;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--library-primary);
+            margin: 1.5rem 0 0.8rem 0;
+            border-left: 4px solid var(--library-accent);
+            padding-left: 15px;
+        }
+
+        .stat-badge {
+            background: var(--library-highlight-bg);
+            border-left: 4px solid var(--library-primary);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            color: var(--library-primary-dark);
+        }
+
+        .list-styled {
+            list-style: none;
+            padding: 0;
+            margin: 0.8rem 0;
+        }
+
+        .list-styled li {
+            padding: 0.6rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+        }
+
+        .list-styled li i {
+            color: var(--library-accent);
+            width: 1.5rem;
+            margin-top: 0.2rem;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .resource-card {
+            background: var(--library-bg);
+            padding: 0.8rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .more-info-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--library-primary);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            gap: 0.5rem;
+            margin: 1rem 0 0.5rem;
+            box-shadow: 0 4px 12px rgba(26,54,93,0.3);
+        }
+
+        .more-info-btn:hover {
+            background: var(--library-primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .footer-note {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: var(--library-bg);
+            border-radius: 12px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .accessibility-widget {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            z-index: 999;
+        }
+
+        .accessibility-widget button {
+            background: var(--library-light-bg);
+            border: 1px solid var(--library-border);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--library-text);
+            transition: 0.2s;
+        }
+
+        .accessibility-widget button.active {
+            background: var(--library-primary);
+            color: white;
+            border-color: var(--library-primary);
+        }
+
+        .demo-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .demo-overlay.hidden {
+            display: none;
+        }
+
+        .demo-card {
+            background: white;
+            border-radius: 32px;
+            padding: 2rem;
+            text-align: center;
+            max-width: 400px;
+        }
+
+        .demo-card .brand-logo img {
+            height: 70px;
+        }
+
+        .demo-card .brand-name {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--library-primary);
+        }
+
+        .demo-btn {
+            background: var(--library-primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            margin: 0.5rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .demo-reopen-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--library-primary);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            z-index: 999;
+        }
+
+        .pwa-install-banner {
+            background: var(--library-primary);
+            color: white;
+            text-align: center;
+            padding: 0.8rem;
+            border-radius: 16px;
+            margin-top: 1rem;
+            cursor: pointer;
+        }
+
+        .image-modal .modal-content {
+            max-width: 600px;
+        }
+
+        .modal-image {
+            max-width: 100%;
+            height: auto;
+            margin: 1rem 0;
+            border-radius: 16px;
+        }
+
+        @media (max-width: 700px) {
+            .card {
+                padding: 1.5rem;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .modal-header h2 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <video class="video-background" autoplay muted playsinline>
+        <source src="library-bg.mp4" type="video/mp4">
+    </video>
+
+    <div id="demoOverlay" class="demo-overlay">
+        <div class="demo-card">
+            <div class="brand-logo">
+                <img src="library-logo.png" alt="Library Logo">
+            </div>
+            <div class="brand-name">Biblioteka Públika</div>
+            <h1 data-i18n="demo_welcome">Bem-vindu! | Welcome!</h1>
+            <p data-i18n="demo_sub">Recursos di biblioteka na Kriolu i Inglês</p>
+            <button id="demoCloseBtn" class="demo-btn"><i class="fas fa-book-open"></i> <span data-i18n="enter">Entra / Enter</span></button>
+        </div>
+    </div>
+
+    <div class="card">
+        <header>
+            <div class="brand-logo">
+                <img src="library-logo.png" alt="Library Logo">
+            </div>
+            <div class="language-switcher">
+                <button class="lang-btn" id="langBtn">
+                    <i class="fas fa-globe"></i> <span id="current-lang-label">Kriolu (Cabo Verde)</span> <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <a href="#" data-lang="kea">Kriolu (Cabo Verde)</a>
+                    <a href="#" data-lang="en">English</a>
+                </div>
+            </div>
+            <h1 data-i18n="main_title">Servisu di Biblioteka Públika</h1>
+            <div class="subhead" data-i18n="subhead">Informason na Kriolu i Inglês pa tudu komunidadi</div>
+        </header>
+
+        <div class="buttons-grid">
+            <button class="button" data-modal="cardModal"><i class="fas fa-id-card"></i> <span data-i18n="btn_card">Kartãu di Biblioteka</span></button>
+            <button class="button" data-modal="computerModal"><i class="fas fa-desktop"></i> <span data-i18n="btn_computers">Komputador & WiFi</span></button>
+            <button class="button" data-modal="eventsModal"><i class="fas fa-calendar-alt"></i> <span data-i18n="btn_events">Eventus & Programa</span></button>
+            <button class="button" data-modal="roomsModal"><i class="fas fa-door-open"></i> <span data-i18n="btn_rooms">Sala di Estudu</span></button>
+            <button class="button" data-modal="languageModal"><i class="fas fa-language"></i> <span data-i18n="btn_language">Aprende Inglês / Kriolu</span></button>
+            <button class="button" data-modal="jobsModal"><i class="fas fa-briefcase"></i> <span data-i18n="btn_jobs">Rekursu di Trabadju</span></button>
+            <button class="button" data-modal="healthModal"><i class="fas fa-heartbeat"></i> <span data-i18n="btn_health">Informason di Saúde</span></button>
+            <button class="button" data-modal="policyModal"><i class="fas fa-shield-alt"></i> <span data-i18n="btn_policy">Polítika & Regra</span></button>
+            <button class="button" data-modal="passportModal"><i class="fas fa-passport"></i> <span data-i18n="btn_passport">Passaporti / Passports</span></button>
+        </div>
+
+        <footer>
+            <div id="pwaInstallBanner" class="pwa-install-banner" style="display: none;">
+                <i class="fas fa-download"></i> <span data-i18n="install_app">Instala App di Biblioteka</span>
+            </div>
+        </footer>
+    </div>
+
+    <div class="accessibility-widget">
+        <button id="a11y-large-text" aria-label="Large text"><i class="fas fa-text-height"></i></button>
+        <button id="a11y-high-contrast" aria-label="High contrast"><i class="fas fa-adjust"></i></button>
+    </div>
+
+    <button id="demoReopenBtn" class="demo-reopen-btn" aria-label="Show welcome">
+        <i class="fas fa-info-circle"></i> Info
+    </button>
+
+    <!-- Library Card Modal -->
+    <div class="modal-overlay" id="cardModal">
+        <div class="modal-content">
+            <div class="modal-header"><h2><i class="fas fa-id-card"></i> <span data-i18n="modal_card_title">Kartãu di Biblioteka / Library Card</span></h2><button class="close-modal close-btn">&times;</button></div>
+            <div class="modal-body">
+                <div class="stat-badge"><i class="fas fa-star"></i> <span data-i18n="card_stat">Kartãu grátis pa rezidentis! / Free card for all residents!</span></div>
+
+                <h3 class="section-title" data-i18n="card_how_to">Kum é pa konsigi un kartãu? / How to Get a Card</h3>
+                <ol class="list-styled">
+                    <li><i class="fas fa-check-circle"></i><strong data-i18n="card_step1">Pasa na biblioteka durante orariu di funsionamentu. / Visit the library during open hours.</strong></li>
+                    <li><i class="fas fa-check-circle"></i><strong data-i18n="card_step2">Meste un ID ku foto (pa ex. kartãu di identifikason, passaporte, ou kartãu di motorista). / Bring a photo ID (e.g., state ID, passport, or driver’s license).</strong></li>
+                    <li><i class="fas fa-check-circle"></i><strong data-i18n="card_step3">Meste un komprovativu di morada (pa ex. konta di luz, áwa, ou kartãu di banku ku morada). / Bring proof of address (e.g., utility bill, lease, or bank statement with address).</strong></li>
+                    <li><i class="fas fa-check-circle"></i><strong data-i18n="card_step4">Preenxi formuláriu di inskriçon. / Fill out the registration form.</strong></li>
+                    <li><i class="fas fa-check-circle"></i><strong data-i18n="card_step5">Recebi kartãu di biblioteka na ora. / Receive your library card immediately.</strong></li>
+                </ol>
+
+                <h3 class="section-title" data-i18n="card_benefits">Kosa bu pode fasi ku kartãu? / What Can You Do with a Card?</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-book"></i> <span data-i18n="card_benefit1">Empresta livrus, DVDs, i CD di música. / Borrow books, DVDs, and music CDs.</span></li>
+                    <li><i class="fas fa-laptop"></i> <span data-i18n="card_benefit2">Uza komputador i impresora na biblioteka. / Use library computers and printers.</span></li>
+                    <li><i class="fas fa-wifi"></i> <span data-i18n="card_benefit3">Acesa WiFi grátis. / Access free WiFi.</span></li>
+                    <li><i class="fas fa-globe"></i> <span data-i18n="card_benefit4">Acesa rekursu online (e-books, audiolivrus, i mais). / Access online resources (e-books, audiobooks, and more).</span></li>
+                    <li><i class="fas fa-calendar"></i> <span data-i18n="card_benefit5">Partisipa na eventus i programa. / Participate in events and programs.</span></li>
+                    <li><i class="fas fa-door-open"></i> <span data-i18n="card_benefit6">Reserva sala di estudu. / Reserve study rooms.</span></li>
+                </ul>
+
+                <h3 class="section-title" data-i18n="card_loan">Regra di Empréstimu / Loan Rules</h3>
+                <div class="resources-grid">
+                    <div class="resource-card"><i class="fas fa-book"></i> <span data-i18n="card_loan_books">Livrus: 3 simana / Books: 3 weeks</span></div>
+                    <div class="resource-card"><i class="fas fa-film"></i> <span data-i18n="card_loan_dvds">DVDs: 1 simana / DVDs: 1 week</span></div>
+                    <div class="resource-card"><i class="fas fa-exclamation-triangle"></i> <span data-i18n="card_loan_late">Multa: $0.10 pa dia di atrasu / Late fee: $0.10 per day</span></div>
+                    <div class="resource-card"><i class="fas fa-sync"></i> <span data-i18n="card_loan_renew">Pode renova 2 vezis / Can renew 2 times</span></div>
+                </div>
+
+                <button class="more-info-btn" data-image-modal="cardImageModal"><i class="fas fa-image"></i> <span data-i18n="view_details">Odja Detalhes / View Details</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Computer & WiFi Modal -->
+    <div class="modal-overlay" id="computerModal">
+        <div class="modal-content">
+            <div class="modal-header"><h2><i class="fas fa-desktop"></i> <span data-i18n="modal_comp_title">Komputador & WiFi / Computers & WiFi</span></h2><button class="close-modal close-btn">&times;</button></div>
+            <div class="modal-body">
+                <div class="stat-badge"><i class="fas fa-wifi"></i> <span data-i18n="comp_stat">WiFi grátis disponível durante tudu horariu. / Free WiFi available all day.</span></div>
+
+                <h3 class="section-title" data-i18n="comp_public">Komputador Públiku / Public Computers</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-desktop"></i> <span data-i18n="comp_public1">12 komputador disponível pa uzu públiku. / 12 computers available for public use.</span></li>
+                    <li><i class="fas fa-clock"></i> <span data-i18n="comp_public2">Limitason di 2 óra pa seson (pode estendi si ninguém ta spera). / 2-hour session limit (can extend if no one is waiting).</span></li>
+                    <li><i class="fas fa-user"></i> <span data-i18n="comp_public3">Meste kartãu di biblioteka pa uza komputador. / Library card required to use computers.</span></li>
+                    <li><i class="fas fa-print"></i> <span data-i18n="comp_public4">Impreson: $0.10 pa pájina (preto i branku) / Printing: $0.10 per page (black and white).</span></li>
+                    <li><i class="fas fa-file-pdf"></i> <span data-i18n="comp_public5">Impreson a kor: $0.50 pa pájina. / Color printing: $0.50 per page.</span></li>
+                </ul>
+
+                <h3 class="section-title" data-i18n="comp_wifi">WiFi Grátis / Free WiFi</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-signal"></i> <span data-i18n="comp_wifi1">Rede: "Biblioteka_Públika" / Network: "Public_Library"</span></li>
+                    <li><i class="fas fa-lock-open"></i> <span data-i18n="comp_wifi2">Senha: "LerÉSaber2026" / Password: "ReadIsKnow2026"</span></li>
+                    <li><i class="fas fa-clock"></i> <span data-i18n="comp_wifi3">Disponível durante orariu di funsionamentu. / Available during open hours.</span></li>
+                    <li><i class="fas fa-info-circle"></i> <span data-i18n="comp_wifi4">Neka uza rede pa aktividadi ilegál. / Do not use the network for illegal activities.</span></li>
+                </ul>
+
+                <h3 class="section-title" data-i18n="comp_software">Software Disponível / Available Software</h3>
+                <div class="resources-grid">
+                    <div class="resource-card"><i class="fas fa-file-word"></i> <span>Microsoft Word</span></div>
+                    <div class="resource-card"><i class="fas fa-file-excel"></i> <span>Microsoft Excel</span></div>
+                    <div class="resource-card"><i class="fas fa-file-powerpoint"></i> <span>Microsoft PowerPoint</span></div>
+                    <div class="resource-card"><i class="fas fa-paint-brush"></i> <span>Adobe Photoshop</span></div>
+                    <div class="resource-card"><i class="fas fa-code"></i> <span>Scratch (pa kriansa)</span></div>
+                    <div class="resource-card"><i class="fas fa-globe"></i> <span>Google Chrome</span></div>
+                </div>
+
+                <h3 class="section-title" data-i18n="comp_help">Ajudá di Informátika / Computer Help</h3>
+                <p data-i18n="comp_help_desc">Biblioteka oferese ajuda básika di informátika durante orariu di funsionamentu. Staff pode ajuda bu ku: / The library offers basic computer help during open hours. Staff can assist with:</p>
+                <ul class="list-styled">
+                    <li><i class="fas fa-mouse-pointer"></i> <span data-i18n="comp_help1">Uzu di ratón i tecladu. / Mouse and keyboard use.</span></li>
+                    <li><i class="fas fa-envelope"></i> <span data-i18n="comp_help2">Kria un konta di email. / Creating an email account.</span></li>
+                    <li><i class="fas fa-search"></i> <span data-i18n="comp_help3">Buska na internet. / Internet searching.</span></li>
+                    <li><i class="fas fa-print"></i> <span data-i18n="comp_help4">Imprimi i skaneia dokumentu. / Printing and scanning documents.</span></li>
+                    <li><i class="fas fa-file-alt"></i> <span data-i18n="comp_help5">Salva i organizá ficheiru. / Saving and organizing files.</span></li>
+                </ul>
+
+                <button class="more-info-btn" data-image-modal="compImageModal"><i class="fas fa-image"></i> <span data-i18n="view_details">Odja Detalhes / View Details</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Events Modal -->
+    <div class="modal-overlay" id="eventsModal">
+        <div class="modal-content">
+            <div class="modal-header"><h2><i class="fas fa-calendar-alt"></i> <span data-i18n="modal_events_title">Eventus & Programa / Events & Programs</span></h2><button class="close-modal close-btn">&times;</button></div>
+            <div class="modal-body">
+                <div class="stat-badge"><i class="fas fa-users"></i> <span data-i18n="events_stat">Programa pa kriansa, adultus i idozus. / Programs for children, adults, and seniors.</span></div>
+
+                <h3 class="section-title" data-i18n="events_kids">Programa pa Kriansa / Children’s Programs</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-book-reader"></i> <strong data-i18n="events_kids1">Kontu di Stória (Terça i Quintu, 10:30 AM) / Storytime (Tuesdays & Thursdays, 10:30 AM)</strong>
+                        <p data-i18n="events_kids1_desc">Kontu interativu i kantiga pa kriansa di 0-5 anu. / Interactive stories and songs for ages 0-5.</p>
+                    </li>
+                    <li><i class="fas fa-palette"></i> <strong data-i18n="events_kids2">Klub di Arte (Sábadu, 11:00 AM) / Art Club (Saturdays, 11:00 AM)</strong>
+                        <p data-i18n="events_kids2_desc">Atividadis di arte i artesanatu pa kriansa di 6-12 anu. / Arts and crafts for ages 6-12.</p>
+                    </li>
+                    <li><i class="fas fa-puzzle-piece"></i> <strong data-i18n="events_kids3">LEGO Klub (Quarta, 4:00 PM) / LEGO Club (Wednesdays, 4:00 PM)</strong>
+                        <p data-i18n="events_kids3_desc">Konstrui i kria ku LEGO. / Build and create with LEGO.</p>
+                    </li>
+                </ul>
+
+                <h3 class="section-title" data-i18n="events_adults">Programa pa Adultus / Adult Programs</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-book"></i> <strong data-i18n="events_adults1">Klub di Leitura (Segunda, 6:00 PM) / Book Club (Mondays, 6:00 PM)</strong>
+                        <p data-i18n="events_adults1_desc">Diskuson mensal sobri un livru. Livrus disponível na Kriolu i Inglês. / Monthly discussion of a selected book. Books available in Kriolu and English.</p>
+                    </li>
+                    <li><i class="fas fa-laptop-code"></i> <strong data-i18n="events_adults2">Aula di Informátika (Terça i Quintu, 2:00 PM) / Computer Classes (Tuesdays & Thursdays, 2:00 PM)</strong>
+                        <p data-i18n="events_adults2_desc">Aula básika di uzu di komputador, internet, i email. / Basic classes on computer use, internet, and email.</p>
+                    </li>
+                    <li><i class="fas fa-language"></i> <strong data-i18n="events_adults3">Aula di Inglês (Quarta i Sexta, 5:00 PM) / English Classes (Wednesdays & Fridays, 5:00 PM)</strong>
+                        <p data-i18n="events_adults3_desc">Aula grátis di Inglês pa falantes di Kriolu. / Free English classes for Kriolu speakers.</p>
+                    </li>
+                    <li><i class="fas fa-briefcase"></i> <strong data-i18n="events_adults4">Oficina di Kurrículu (Sábadu, 10:00 AM) / Resume Workshop (Saturdays, 10:00 AM)</strong>
+                        <p data-i18n="events_adults4_desc">Aprende kum skribi un kurrículu i karta di kubikason. / Learn how to write a resume and cover letter.</p>
+                    </li>
+                </ul>
+
+                <h3 class="section-title" data-i18n="events_seniors">Programa pa Idozus / Senior Programs</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-book-open"></i> <strong data-i18n="events_seniors1">Klub di Leitura pa Idozus (Quinta, 11:00 AM) / Senior Book Club (Thursdays, 11:00 AM)</strong>
+                        <p data-i18n="events_seniors1_desc">Diskuson sobri livrus klassiku i kontemporâniu. / Discussion of classic and contemporary books.</p>
+                    </li>
+                    <li><i class="fas fa-chess"></i> <strong data-i18n="events_seniors2">Jogu di Xadrez (Segunda i Quarta, 1:00 PM) / Chess Game (Mondays & Wednesdays, 1:00 PM)</strong>
+                        <p data-i18n="events_seniors2_desc">Joga xadrez ku amigu i komunidadi. / Play chess with friends and community.</p>
+                    </li>
+                </ul>
+
+                <h3 class="section-title" data-i18n="events_cultural">Eventus Kultural / Cultural Events</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-music"></i> <strong data-i18n="events_cultural1">Noiti di Música (Primeira Sexta di cada mes, 7:00 PM) / Music Night (First Friday of the month, 7:00 PM)</strong>
+                        <p data-i18n="events_cultural1_desc">Konsertu ku música tradicional i moderna di Cabo Verde. / Concerts featuring traditional and modern Cape Verdean music.</p>
+                    </li>
+                    <li><i class="fas fa-film"></i> <strong data-i18n="events_cultural2">Noiti di Filmi (Sábadu, 3:00 PM) / Movie Night (Saturdays, 3:00 PM)</strong>
+                        <p data-i18n="events_cultural2_desc">Filmi na Kriolu i Inglês ku subtítulo. / Movies in Kriolu and English with subtitles.</p>
+                    </li>
+                    <li><i class="fas fa-utensils"></i> <strong data-i18n="events_cultural3">Oficina di Kuzinha (Última Terça di cada mes, 4:00 PM) / Cooking Workshop (Last Tuesday of the month, 4:00 PM)</strong>
+                        <p data-i18n="events_cultural3_desc">Aprende reseta tradicional di Cabo Verde. / Learn traditional Cape Verdean recipes.</p>
+                    </li>
+                </ul>
+
+                <div class="footer-note">
+                    <p data-i18n="events_note"><strong>Nota:</strong> Tudu eventus é grátis i abertu pa komunidadi. / All events are free and open to the community.</p>
+                    <p data-i18n="events_note2">Meste konsulta kalendáriu online pa atulizason. / Check the online calendar for updates.</p>
+                </div>
+
+                <button class="more-info-btn" data-image-modal="eventsImageModal"><i class="fas fa-image"></i> <span data-i18n="view_details">Odja Detalhes / View Details</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Study Rooms Modal -->
+    <div class="modal-overlay" id="roomsModal">
+        <div class="modal-content">
+            <div class="modal-header"><h2><i class="fas fa-door-open"></i> <span data-i18n="modal_rooms_title">Sala di Estudu / Study Rooms</span></h2><button class="close-modal close-btn">&times;</button></div>
+            <div class="modal-body">
+                <div class="stat-badge"><i class="fas fa-users"></i> <span data-i18n="rooms_stat">Sala disponível pa grupu ou individuál. / Rooms available for groups or individuals.</span></div>
+
+                <h3 class="section-title" data-i18n="rooms_types">Tipu di Sala / Room Types</h3>
+                <div class="resources-grid">
+                    <div class="resource-card"><i class="fas fa-user"></i> <strong data-i18n="rooms_type1">Sala Individuál (1-2 pesoa) / Individual Room (1-2 people)</strong></div>
+                    <div class="resource-card"><i class="fas fa-users"></i> <strong data-i18n="rooms_type2">Sala di Grupu (3-6 pesoa) / Group Room (3-6 people)</strong></div>
+                    <div class="resource-card"><i class="fas fa-chalkboard"></i> <strong data-i18n="rooms_type3">Sala ku Quadru Branku / Room with Whiteboard</strong></div>
+                    <div class="resource-card"><i class="fas fa-tv"></i> <strong data-i18n="rooms_type4">Sala ku TV / Room with TV</strong></div>
+                </div>
+
+                <h3 class="section-title" data-i18n="rooms_how_to">Kum é pa Reserva / How to Reserve</h3>
+                <ol class="list-styled">
+                    <li><i class="fas fa-check-circle"></i><strong data-i18n="rooms_step1">Meste kartãu di biblioteka válidu. / Have a valid library card.</strong></li>
+                    <li><i class="fas fa-check-circle"></i><strong data-i18n="rooms_step2">Fasi reserva na balcão di informason ou ligá pa (555) 123-4567. / Make a reservation at the information desk or call (555) 123-4567.</strong></li>
+                    <li><i class="fas fa-check-circle"></i><strong data-i18n="rooms_step3">Reserva pode fasi 1 simana na frenti. / Reservations can be made up to 1 week in advance.</strong></li>
+                    <li><i class="fas fa-check-circle"></i><strong data-i18n="rooms_step4">Limitason di 2 óra pa reserva. / 2-hour limit per reservation.</strong></li>
+                    <li><i class="fas fa-check-circle"></i><strong data-i18n="rooms_step5">Si bu ta 15 minutu atrasadu, reserva pode sí anulá. / If you are 15 minutes late, your reservation may be canceled.</strong></li>
+                </ol>
+
+                <h3 class="section-title" data-i18n="rooms_rules">Regra di Uzu / Usage Rules</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-volume-mute"></i> <span data-i18n="rooms_rule1">Manten silénsiu na sala. / Keep noise to a minimum.</span></li>
+                    <li><i class="fas fa-food-ban"></i> <span data-i18n="rooms_rule2">Neka komi ou bebi na sala. / No food or drinks allowed.</span></li>
+                    <li><i class="fas fa-smoking-ban"></i> <span data-i18n="rooms_rule3">Neka fuma na sala. / No smoking.</span></li>
+                    <li><i class="fas fa-door-closed"></i> <span data-i18n="rooms_rule4">Neka dexá sala desordená. / Do not leave the room messy.</span></li>
+                    <li><i class="fas fa-user-friends"></i> <span data-i18n="rooms_rule5">Neka uza sala pa aktividadi komersial. / Do not use the room for commercial activities.</span></li>
+                </ul>
+
+                <h3 class="section-title" data-i18n="rooms_equipment">Ekipamentu Disponível / Available Equipment</h3>
+                <div class="resources-grid">
+                    <div class="resource-card"><i class="fas fa-chalkboard"></i> <span data-i18n="rooms_equip1">Quadru branku i markador / Whiteboard and markers</span></div>
+                    <div class="resource-card"><i class="fas fa-tv"></i> <span data-i18n="rooms_equip2">TV ku HDMI / TV with HDMI</span></div>
+                    <div class="resource-card"><i class="fas fa-plug"></i> <span data-i18n="rooms_equip3">Tomada di korrenti / Power outlets</span></div>
+                    <div class="resource-card"><i class="fas fa-wifi"></i> <span data-i18n="rooms_equip4">Acesu WiFi / WiFi access</span></div>
+                </div>
+
+                <button class="more-info-btn" data-image-modal="roomsImageModal"><i class="fas fa-image"></i> <span data-i18n="view_details">Odja Detalhes / View Details</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Language Modal -->
+    <div class="modal-overlay" id="languageModal">
+        <div class="modal-content">
+            <div class="modal-header"><h2><i class="fas fa-language"></i> <span data-i18n="modal_lang_title">Aprende Inglês / Kriolu / Learn English & Kriolu</span></h2><button class="close-modal close-btn">&times;</button></div>
+            <div class="modal-body">
+                <div class="stat-badge"><i class="fas fa-chalkboard-teacher"></i> <span data-i18n="lang_stat">Aula grátis di idioma pa komunidadi. / Free language classes for the community.</span></div>
+
+                <h3 class="section-title" data-i18n="lang_english">Aula di Inglês / English Classes</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-calendar"></i> <strong data-i18n="lang_english1">Quarta i Sexta, 5:00 PM - 7:00 PM / Wednesdays & Fridays, 5:00 PM - 7:00 PM</strong>
+                        <p data-i18n="lang_english1_desc">Aula pa inisianti i intermediáriu. / Classes for beginners and intermediate learners.</p>
+                    </li>
+                    <li><i class="fas fa-user"></i> <strong data-i18n="lang_english2">Klasis di 10-15 pesoa. / Class size: 10-15 people.</strong></li>
+                    <li><i class="fas fa-book"></i> <strong data-i18n="lang_english3">Materiais grátis. / Free materials provided.</strong></li>
+                    <li><i class="fas fa-certificate"></i> <strong data-i18n="lang_english4">Sertifikadu di partisipason. / Certificate of participation.</strong></li>
+                </ul>
+
+                <h3 class="section-title" data-i18n="lang_kriolu">Aula di Kriolu / Kriolu Classes</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-calendar"></i> <strong data-i18n="lang_kriolu1">Segunda i Terça, 6:00 PM - 8:00 PM / Mondays & Tuesdays, 6:00 PM - 8:00 PM</strong>
+                        <p data-i18n="lang_kriolu1_desc">Aula pa falantes di Inglês ki ker aprende Kriolu. / Classes for English speakers who want to learn Kriolu.</p>
+                    </li>
+                    <li><i class="fas fa-globe"></i> <strong data-i18n="lang_kriolu2">Foku na Kriolu di Cabo Verde. / Focus on Cape Verdean Kriolu.</strong></li>
+                    <li><i class="fas fa-music"></i> <strong data-i18n="lang_kriolu3">Inklui música i kultura. / Includes music and culture.</strong></li>
+                </ul>
+
+                <h3 class="section-title" data-i18n="lang_conversation">Sesons di Konversason / Conversation Sessions</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-comments"></i> <strong data-i18n="lang_conv1">Sábadu, 10:00 AM - 12:00 PM / Saturdays, 10:00 AM - 12:00 PM</strong>
+                        <p data-i18n="lang_conv1_desc">Praktika Inglês i Kriolu ku falantes nativu. / Practice English and Kriolu with native speakers.</p>
+                    </li>
+                    <li><i class="fas fa-coffee"></i> <strong data-i18n="lang_conv2">Kafé i Konversason (Quinta, 3:00 PM) / Coffee & Conversation (Thursdays, 3:00 PM)</strong>
+                        <p data-i18n="lang_conv2_desc">Un seson informal pa praktika idioma. / Informal session to practice language.</p>
+                    </li>
+                </ul>
+
+                <h3 class="section-title" data-i18n="lang_resources">Rekursu di Aprendizajen / Learning Resources</h3>
+                <div class="resources-grid">
+                    <div class="resource-card"><i class="fas fa-book"></i> <span data-i18n="lang_res1">Livrus di Inglês pa inisianti / English books for beginners</span></div>
+                    <div class="resource-card"><i class="fas fa-book"></i> <span data-i18n="lang_res2">Livrus di Kriolu / Kriolu books</span></div>
+                    <div class="resource-card"><i class="fas fa-headphones"></i> <span data-i18n="lang_res3">Audiolivrus na Inglês i Kriolu / Audiobooks in English & Kriolu</span></div>
+                    <div class="resource-card"><i class="fas fa-mobile-alt"></i> <span data-i18n="lang_res4">Aplicativus: Duolingo, Memrise / Apps: Duolingo, Memrise</span></div>
+                    <div class="resource-card"><i class="fas fa-globe"></i> <span data-i18n="lang_res5">Site: BBC Learning English / Websites: BBC Learning English</span></div>
+                    <div class="resource-card"><i class="fas fa-globe"></i> <span data-i18n="lang_res6">Site: Kriolu Language Resources / Websites: Kriolu Language Resources</span></div>
+                </div>
+
+                <h3 class="section-title" data-i18n="lang_tutoring">Ajudá Individual / One-on-One Help</h3>
+                <p data-i18n="lang_tutoring_desc">Biblioteka oferese sesons individual ku voluntáriu pa praktika Inglês i Kriolu. / The library offers one-on-one sessions with volunteers to practice English and Kriolu.</p>
+                <ul class="list-styled">
+                    <li><i class="fas fa-calendar-check"></i> <span data-i18n="lang_tutoring1">Marca un orariu na balcão. / Schedule a time at the desk.</span></li>
+                    <li><i class="fas fa-clock"></i> <span data-i18n="lang_tutoring2">Sesons di 30 minutu. / 30-minute sessions.</span></li>
+                </ul>
+
+                <button class="more-info-btn" data-image-modal="langImageModal"><i class="fas fa-image"></i> <span data-i18n="view_details">Odja Detalhes / View Details</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Job Resources Modal -->
+    <div class="modal-overlay" id="jobsModal">
+        <div class="modal-content">
+            <div class="modal-header"><h2><i class="fas fa-briefcase"></i> <span data-i18n="modal_jobs_title">Rekursu di Trabadju / Job Resources</span></h2><button class="close-modal close-btn">&times;</button></div>
+            <div class="modal-body">
+                <div class="stat-badge"><i class="fas fa-file-alt"></i> <span data-i18n="jobs_stat">Apoiu pa buska trabadju, kurrículu, i entrevista. / Support for job search, resumes, and interviews.</span></div>
+
+                <h3 class="section-title" data-i18n="jobs_search">Buska di Trabadju / Job Search</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-search"></i> <strong data-i18n="jobs_search1">Acesu a site di vaga: / Access to job listing sites:</strong>
+                        <ul class="list-styled">
+                            <li><i class="fas fa-link"></i> <span>Indeed (www.indeed.com)</span></li>
+                            <li><i class="fas fa-link"></i> <span>LinkedIn (www.linkedin.com)</span></li>
+                            <li><i class="fas fa-link"></i> <span>Glassdoor (www.glassdoor.com)</span></li>
+                            <li><i class="fas fa-link"></i> <span>Craigslist (www.craigslist.org)</span></li>
+                        </ul>
+                    </li>
+                    <li><i class="fas fa-newspaper"></i> <span data-i18n="jobs_search2">Jornal lokal ku anúnsiu di trabadju. / Local newspapers with job ads.</span></li>
+                    <li><i class="fas fa-phone"></i> <span data-i18n="jobs_search3">Lista di kontatu di empresa lokal. / List of local company contacts.</span></li>
+                </ul>
+
+                <h3 class="section-title" data-i18n="jobs_resume">Kurrículu i Karta di Kubikason / Resume & Cover Letter</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-file-alt"></i> <strong data-i18n="jobs_resume1">Oficina di Kurrículu (Sábadu, 10:00 AM) / Resume Workshop (Saturdays, 10:00 AM)</strong>
+                        <p data-i18n="jobs_resume1_desc">Aprende kum skribi un kurrículu efikás. / Learn how to write an effective resume.</p>
+                    </li>
+                    <li><i class="fas fa-print"></i> <span data-i18n="jobs_resume2">Impreson grátis di kurrículu i karta di kubikason. / Free printing of resumes and cover letters.</span></li>
+                    <li><i class="fas fa-book"></i> <span data-i18n="jobs_resume3">Livrus i guia pa skribi kurrículu. / Books and guides for writing resumes.</span></li>
+                    <li><i class="fas fa-laptop"></i> <span data-i18n="jobs_resume4">Template di kurrículu na komputador. / Resume templates on library computers.</span></li>
+                </ul>
+
+                <h3 class="section-title" data-i18n="jobs_interview">Preparason pa Entrevista / Interview Preparation</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-video"></i> <strong data-i18n="jobs_interview1">Simulason di Entrevista / Mock Interviews</strong>
+                        <p data-i18n="jobs_interview1_desc">Praktika ku un staff di biblioteka pa prepará pa entrevista real. / Practice with library staff to prepare for real interviews.</p>
+                    </li>
+                    <li><i class="fas fa-suitcase"></i> <span data-i18n="jobs_interview2">Lista di perguntas komum na entrevista. / List of common interview questions.</span></li>
+                    <li><i class="fas fa-clothes"></i> <span data-i18n="jobs_interview3">Konselhu sobri vestuáriu pa entrevista. / Advice on interview attire.</span></li>
+                </ul>
+
+                <h3 class="section-title" data-i18n="jobs_workshops">Oficina i Sesons / Workshops & Sessions</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-calendar"></i> <strong data-i18n="jobs_workshops1">Oficina di Buska di Trabadju (Primeira Terça di cada mes, 2:00 PM) / Job Search Workshop (First Tuesday of the month, 2:00 PM)</strong>
+                        <p data-i18n="jobs_workshops1_desc">Aprende estratejia pa buska trabadju. / Learn job search strategies.</p>
+                    </li>
+                    <li><i class="fas fa-calendar"></i> <strong data-i18n="jobs_workshops2">Seson di Networking (Última Quinta di cada mes, 6:00 PM) / Networking Session (Last Thursday of the month, 6:00 PM)</strong>
+                        <p data-i18n="jobs_workshops2_desc">Konheci profissionál na túu área. / Meet professionals in your field.</p>
+                    </li>
+                </ul>
+
+                <h3 class="section-title" data-i18n="jobs_online">Rekursu Online / Online Resources</h3>
+                <div class="resources-grid">
+                    <div class="resource-card"><i class="fas fa-graduation-cap"></i> <span>Coursera (www.coursera.org)</span></div>
+                    <div class="resource-card"><i class="fas fa-graduation-cap"></i> <span>edX (www.edx.org)</span></div>
+                    <div class="resource-card"><i class="fas fa-file-alt"></i> <span>Canva (www.canva.com) - pa kria kurrículu</span></div>
+                    <div class="resource-card"><i class="fas fa-user-tie"></i> <span>LinkedIn Learning (www.linkedin.com/learning)</span></div>
+                </div>
+
+                <button class="more-info-btn" data-image-modal="jobsImageModal"><i class="fas fa-image"></i> <span data-i18n="view_details">Odja Detalhes / View Details</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Health Information Modal -->
+    <div class="modal-overlay" id="healthModal">
+        <div class="modal-content">
+            <div class="modal-header"><h2><i class="fas fa-heartbeat"></i> <span data-i18n="modal_health_title">Informason di Saúde / Health Information</span></h2><button class="close-modal close-btn">&times;</button></div>
+            <div class="modal-body">
+                <div class="stat-badge"><i class="fas fa-notes-medical"></i> <span data-i18n="health_stat">Rekursu di saúde lokal i nacional. / Local and national health resources.</span></div>
+
+                <h3 class="section-title" data-i18n="health_portal">Portal di Saúde na Kriolu / Health Portal in Kriolu</h3>
+                <p data-i18n="health_portal_desc">Biblioteka ten un portal di saúde komunidadi na Kriolu ku informason sobri:</p>
+                <ul class="list-styled">
+                    <li><i class="fas fa-virus"></i> <span data-i18n="health_portal1">Prevençon di doensa (COVID-19, gripi, i mais). / Disease prevention (COVID-19, flu, etc.).</span></li>
+                    <li><i class="fas fa-apple-alt"></i> <span data-i18n="health_portal2">Nutrisón i dieta sadia. / Nutrition and healthy diet.</span></li>
+                    <li><i class="fas fa-heart"></i> <span data-i18n="health_portal3">Saúde di korason i diabéti. / Heart health and diabetes.</span></li>
+                    <li><i class="fas fa-baby"></i> <span data-i18n="health_portal4">Saúde maternal i infantil. / Maternal and child health.</span></li>
+                    <li><i class="fas fa-pills"></i> <span data-i18n="health_portal5">Medikamentu i receita. / Medications and prescriptions.</span></li>
+                    <li><i class="fas fa-hospital"></i> <span data-i18n="health_portal6">Servisu di saúde lokal. / Local health services.</span></li>
+                </ul>
+                <div class="resources-grid">
+                    <div class="resource-card"><i class="fas fa-globe"></i> <a href="#" target="_blank" data-i18n="health_portal_link">Visita Portal di Saúde Kriolu / Visit Kriolu Health Portal</a></div>
+                </div>
+
+                <h3 class="section-title" data-i18n="health_local">Servisu di Saúde Lokal / Local Health Services</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-hospital"></i> <strong data-i18n="health_local1">Sentru di Saúde Komunitáriu / Community Health Center</strong>
+                        <p>Morada: 123 Rua Principal, Boston, MA</p>
+                        <p>Telefoni: (555) 987-6543</p>
+                        <p>Orariu: Segunda - Sexta, 8:00 AM - 5:00 PM</p>
+                    </li>
+                    <li><i class="fas fa-clinic-medical"></i> <strong data-i18n="health_local2">Klinika Grátis / Free Clinic</strong>
+                        <p>Morada: 456 Avenida Central, Boston, MA</p>
+                        <p>Telefoni: (555) 456-7890</p>
+                        <p>Orariu: Terça i Quinta, 9:00 AM - 1:00 PM</p>
+                    </li>
+                    <li><i class="fas fa-ambulance"></i> <strong data-i18n="health_local3">Servisu di Emerjénsia / Emergency Services</strong>
+                        <p>Ligá 911 pa emergénsia.</p>
+                        <p>Call 911 for emergencies.</p>
+                    </li>
+                </ul>
+
+                <h3 class="section-title" data-i18n="health_program">Programa di Saúde / Health Programs</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-calendar"></i> <strong data-i18n="health_program1">Oficina di Nutrisón (Primeira Quarta di cada mes, 10:00 AM) / Nutrition Workshop (First Wednesday of the month, 10:00 AM)</strong>
+                        <p data-i18n="health_program1_desc">Aprende kum prepará refeison sadia. / Learn how to prepare healthy meals.</p>
+                    </li>
+                    <li><i class="fas fa-calendar"></i> <strong data-i18n="health_program2">Aula di Ioga (Sábadu, 9:00 AM) / Yoga Class (Saturdays, 9:00 AM)</strong>
+                        <p data-i18n="health_program2_desc">Ioga grátis pa tudu nível. / Free yoga for all levels.</p>
+                    </li>
+                    <li><i class="fas fa-calendar"></i> <strong data-i18n="health_program3">Testi di Saúde Grátis (Última Sexta di cada mes, 1:00 PM) / Free Health Screenings (Last Friday of the month, 1:00 PM)</strong>
+                        <p data-i18n="health_program3_desc">Testi di presón, açukar, i kolesterol. / Blood pressure, sugar, and cholesterol screenings.</p>
+                    </li>
+                </ul>
+
+                <h3 class="section-title" data-i18n="health_mental">Rekursu di Saúde Mental / Mental Health Resources</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-phone"></i> <strong data-i18n="health_mental1">Linha di Apoiu 24/7 / 24/7 Support Hotline</strong>
+                        <p>Telefoni: 1-800-273-TALK (8255)</p>
+                        <p>Linha grátis i konfidensial pa apoiu emocional.</p>
+                        <p>Free and confidential emotional support hotline.</p>
+                    </li>
+                    <li><i class="fas fa-comments"></i> <strong data-i18n="health_mental2">Grupu di Apoiu / Support Groups</strong>
+                        <p data-i18n="health_mental2_desc">Grupu di apoiu pa ansiedadi, depresón, i mais. / Support groups for anxiety, depression, and more.</p>
+                    </li>
+                </ul>
+
+                <button class="more-info-btn" data-image-modal="healthImageModal"><i class="fas fa-image"></i> <span data-i18n="view_details">Odja Detalhes / View Details</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Policies Modal -->
+    <div class="modal-overlay" id="policyModal">
+        <div class="modal-content">
+            <div class="modal-header"><h2><i class="fas fa-shield-alt"></i> <span data-i18n="modal_policy_title">Polítika & Regra / Policies & Rules</span></h2><button class="close-modal close-btn">&times;</button></div>
+            <div class="modal-body">
+                <div class="stat-badge"><i class="fas fa-check-circle"></i> <span data-i18n="policy_stat">Ambienti siguru i respeitu mutuu. / Safe environment and mutual respect.</span></div>
+
+                <h3 class="section-title" data-i18n="policy_general">Regra Jeneral / General Rules</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-volume-mute"></i> <span data-i18n="policy_general1">Manten silénsiu na área di leitura. / Keep quiet in reading areas.</span></li>
+                    <li><i class="fas fa-mobile-alt"></i> <span data-i18n="policy_general2">Pon telefoni na modu silénsiu. / Put phones on silent mode.</span></li>
+                    <li><i class="fas fa-food-ban"></i> <span data-i18n="policy_general3">Neka komi ou bebi na área di livru. / No food or drinks in book areas.</span></li>
+                    <li><i class="fas fa-smoking-ban"></i> <span data-i18n="policy_general4">Neka fuma na biblioteka. / No smoking in the library.</span></li>
+                    <li><i class="fas fa-paw"></i> <span data-i18n="policy_general5">Neka leba animal di estimason (esetuanu: kaun di servisu). / No pets allowed (except service animals).</span></li>
+                </ul>
+
+                <h3 class="section-title" data-i18n="policy_computer">Regra pa Komputador / Computer Rules</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-clock"></i> <span data-i18n="policy_comp1">Limitason di 2 óra pa seson. / 2-hour session limit.</span></li>
+                    <li><i class="fas fa-user"></i> <span data-i18n="policy_comp2">Meste kartãu di biblioteka pa uza komputador. / Library card required to use computers.</span></li>
+                    <li><i class="fas fa-ban"></i> <span data-i18n="policy_comp3">Neka acesa site ilegál ou inapropriádu. / Do not access illegal or inappropriate websites.</span></li>
+                    <li><i class="fas fa-download"></i> <span data-i18n="policy_comp4">Neka baixa software ou ficheiru ilegál. / Do not download illegal software or files.</span></li>
+                    <li><i class="fas fa-print"></i> <span data-i18n="policy_comp5">Paga impreson na balcão. / Pay for printing at the desk.</span></li>
+                </ul>
+
+                <h3 class="section-title" data-i18n="policy_loan">Regra di Empréstimu / Loan Rules</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-book"></i> <span data-i18n="policy_loan1">Livrus: 3 simana (pode renova 2 vezis). / Books: 3 weeks (can renew 2 times).</span></li>
+                    <li><i class="fas fa-film"></i> <span data-i18n="policy_loan2">DVDs: 1 simana (pode renova 1 vez). / DVDs: 1 week (can renew 1 time).</span></li>
+                    <li><i class="fas fa-exclamation-triangle"></i> <span data-i18n="policy_loan3">Multa: $0.10 pa dia di atrasu. / Late fee: $0.10 per day.</span></li>
+                    <li><i class="fas fa-ban"></i> <span data-i18n="policy_loan4">Neka empresta kartãu di biblioteka pa outru. / Do not lend your library card to others.</span></li>
+                    <li><i class="fas fa-gavel"></i> <span data-i18n="policy_loan5">Bu é responsável pa material emprestádu. / You are responsible for borrowed materials.</span></li>
+                </ul>
+
+                <h3 class="section-title" data-i18n="policy_behavior">Konduta / Behavior</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-handshake"></i> <span data-i18n="policy_behavior1">Trata funsionáriu i outru utente ku edukason. / Treat staff and other patrons with courtesy.</span></li>
+                    <li><i class="fas fa-user-slash"></i> <span data-i18n="policy_behavior2">Neka asedia outru utente. / Do not harass other patrons.</span></li>
+                    <li><i class="fas fa-trash"></i> <span data-i18n="policy_behavior3">Neka danifica propriedade di biblioteka. / Do not damage library property.</span></li>
+                    <li><i class="fas fa-shield-alt"></i> <span data-i18n="policy_behavior4">Biblioteka ten direitu di pidi pa utente ki ta violá regra pa saí. / The library reserves the right to ask violators to leave.</span></li>
+                </ul>
+
+                <h3 class="section-title" data-i18n="policy_safety">Seguransa / Safety</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-door-open"></i> <span data-i18n="policy_safety1">Saída di emergénsia ta na parte trasera. / Emergency exits are at the rear.</span></li>
+                    <li><i class="fas fa-fire-extinguisher"></i> <span data-i18n="policy_safety2">Extintor di fogo ta na parede na entrada. / Fire extinguishers are on the wall near the entrance.</span></li>
+                    <li><i class="fas fa-first-aid"></i> <span data-i18n="policy_safety3">Kit di primeiru sokor ta na balcão. / First aid kit is at the desk.</span></li>
+                </ul>
+
+                <button class="more-info-btn" data-image-modal="policyImageModal"><i class="fas fa-image"></i> <span data-i18n="view_details">Odja Detalhes / View Details</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Passport Services Modal -->
+    <div class="modal-overlay" id="passportModal">
+        <div class="modal-content">
+            <div class="modal-header"><h2><i class="fas fa-passport"></i> <span data-i18n="modal_passport_title">Servisu di Passaporti / Passport Services</span></h2><button class="close-modal close-btn">&times;</button></div>
+            <div class="modal-body">
+                <div class="stat-badge"><i class="fas fa-check-circle"></i> <span data-i18n="passport_stat">Biblioteka ta oferese servisu di aplikason pa passaporti. / The library offers passport application services.</span></div>
+
+                <h3 class="section-title" data-i18n="passport_what">Kos ki é oferesedu? / What's Offered</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-passport"></i> <strong><span data-i18n="passport_what1">Aplikason pa passaporte Merkanu (livru i kartãu) / U.S. passport applications (book and card)</span></strong></li>
+                    <li><i class="fas fa-camera"></i> <strong><span data-i18n="passport_what2">Servisu di fotografia pa passaporte / Passport photo service</span></strong></li>
+                    <li><i class="fas fa-shipping-fast"></i> <strong><span data-i18n="passport_what3">Prosesamentu regular i aseleradu / Regular and expedited processing</span></strong></li>
+                    <li><i class="fas fa-id-card"></i> <strong><span data-i18n="passport_what4">Renovason di passaporte / Passport renewal</span></strong></li>
+                </ul>
+
+                <h3 class="section-title" data-i18n="passport_how_to">Kum é pa apliká? / How to Apply</h3>
+                <ol class="list-styled">
+                    <li><i class="fas fa-check-circle"></i><strong data-i18n="passport_step1">Fasi un markason 401-725-3714 x212. / Make an appointment by calling 401-725-3714 x212.</strong></li>
+                    <li><i class="fas fa-check-circle"></i><strong data-i18n="passport_step2">Meste dokumentu di sidadaia (sertifikadu di naskimentu ou naturalizason). / Bring citizenship evidence (birth certificate or naturalization certificate).</strong></li>
+                    <li><i class="fas fa-check-circle"></i><strong data-i18n="passport_step3">Meste un ID ku foto válidu (kartãu di motorista, ID di stadu, ou passaporte anterior). / Bring a valid photo ID (driver’s license, state ID, or previous passport).</strong></li>
+                    <li><i class="fas fa-check-circle"></i><strong data-i18n="passport_step4">Meste un kópia di ID (frente i tras). / Bring a photocopy of your ID (front and back).</strong></li>
+                    <li><i class="fas fa-check-circle"></i><strong data-i18n="passport_step5">Preenxi formuláriu DS-11 na biblioteka. / Fill out form DS-11 at the library.</strong></li>
+                    <li><i class="fas fa-check-circle"></i><strong data-i18n="passport_step6">Pagu taksa di aplikason i taksa di aseitamentu ku txekis separadu. / Pay the application fee and acceptance fee with separate checks.</strong></li>
+                </ol>
+
+                <h3 class="section-title" data-i18n="passport_fees">Taksas / Fees</h3>
+                <div class="resources-grid">
+                    <div class="resource-card"><i class="fas fa-money-check"></i> <span data-i18n="passport_fee1">Livru (adultu): $130 / Book (adult): $130</span></div>
+                    <div class="resource-card"><i class="fas fa-money-check"></i> <span data-i18n="passport_fee2">Kartãu (adultu): $30 / Card (adult): $30</span></div>
+                    <div class="resource-card"><i class="fas fa-money-check"></i> <span data-i18n="passport_fee3">Livru (kriansa): $100 / Book (child): $100</span></div>
+                    <div class="resource-card"><i class="fas fa-money-check"></i> <span data-i18n="passport_fee4">Txeka di aseitamentu: $35 / Acceptance fee: $35</span></div>
+                </div>
+                <p style="margin-top:1rem;"><span data-i18n="passport_fees_note">Pagu ten ki ser fasi ku txekis separadu pa "U.S. Department of State" i pa "Biblioteka Públika". Neka aseita dinheru ou kartãu di kréditu. / Payment must be made with separate checks to "U.S. Department of State" and "Public Library". No cash or credit cards.</span></p>
+
+                <h3 class="section-title" data-i18n="passport_why">Pamodi é midjor fasi na biblioteka? / Why Apply at the Library?</h3>
+                <ul class="list-styled">
+                    <li><i class="fas fa-clock"></i> <span data-i18n="passport_why1">Markason konvenienti, sen fila lonji. / Convenient appointments, no long lines.</span></li>
+                    <li><i class="fas fa-language"></i> <span data-i18n="passport_why2">Staff ta papiá Kriolu i Inglês pa ajuda bu. / Staff speaks Kriolu and English to assist you.</span></li>
+                    <li><i class="fas fa-camera"></i> <span data-i18n="passport_why3">Fotografia disponível na lokál. / On‑site photo service available.</span></li>
+                    <li><i class="fas fa-check-double"></i> <span data-i18n="passport_why4">Apoiu pa verifiká dokumentu antis di envia. / Help reviewing your documents before submission.</span></li>
+                </ul>
+
+                <div class="footer-note">
+                    <p data-i18n="passport_note"><strong>Nota:</strong> Prosesamentu normal pode dura 8-11 simana. Aseleradu (2-3 simana) disponível ku taksa adisional. / <strong>Note:</strong> Routine processing takes 8-11 weeks. Expedited (2-3 weeks) available for an additional fee.</p>
+                    <p data-i18n="passport_note2">Pa mais informason, ligá pa biblioteka ou visita travel.state.gov. / For more information, call the library or visit travel.state.gov.</p>
+                </div>
+
+                <button class="more-info-btn" data-image-modal="passportImageModal"><i class="fas fa-image"></i> <span data-i18n="view_details">Odja Detalhes / View Details</span></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="imageModalsContainer"></div>
+
+    <script>
+        const translations = {
+            kea: {
+                page_title: "Biblioteka Públika - Recursos Komunidadi | Library Resources",
+                demo_welcome: "Bem-vindu!",
+                demo_sub: "Recursos di biblioteka na Kriolu i Inglês",
+                enter: "Entra",
+                main_title: "Servisu di Biblioteka Públika",
+                subhead: "Informason na Kriolu i Inglês pa tudu komunidadi",
+                btn_card: "Kartãu di Biblioteka",
+                btn_computers: "Komputador & WiFi",
+                btn_events: "Eventus & Programa",
+                btn_rooms: "Sala di Estudu",
+                btn_language: "Aprende Inglês / Kriolu",
+                btn_jobs: "Rekursu di Trabadju",
+                btn_health: "Informason di Saúde",
+                btn_policy: "Polítika & Regra",
+                btn_passport: "Passaporti / Passports",
+                modal_card_title: "Kartãu di Biblioteka / Library Card",
+                card_stat: "Kartãu grátis pa rezidentis! / Free card for all residents!",
+                card_how_to: "Kum é pa konsigi un kartãu? / How to Get a Card",
+                card_step1: "Pasa na biblioteka durante orariu di funsionamentu. / Visit the library during open hours.",
+                card_step2: "Meste un ID ku foto (pa ex. kartãu di identifikason, passaporte, ou kartãu di motorista). / Bring a photo ID (e.g., state ID, passport, or driver’s license).",
+                card_step3: "Meste un komprovativu di morada (pa ex. konta di luz, áwa, ou kartãu di banku ku morada). / Bring proof of address (e.g., utility bill, lease, or bank statement with address).",
+                card_step4: "Preenxi formuláriu di inskriçon. / Fill out the registration form.",
+                card_step5: "Recebi kartãu di biblioteka na ora. / Receive your library card immediately.",
+                card_benefits: "Kosa bu pode fasi ku kartãu? / What Can You Do with a Card?",
+                card_benefit1: "Empresta livrus, DVDs, i CD di música. / Borrow books, DVDs, and music CDs.",
+                card_benefit2: "Uza komputador i impresora na biblioteka. / Use library computers and printers.",
+                card_benefit3: "Acesa WiFi grátis. / Access free WiFi.",
+                card_benefit4: "Acesa rekursu online (e-books, audiolivrus, i mais). / Access online resources (e-books, audiobooks, and more).",
+                card_benefit5: "Partisipa na eventus i programa. / Participate in events and programs.",
+                card_benefit6: "Reserva sala di estudu. / Reserve study rooms.",
+                card_loan: "Regra di Empréstimu / Loan Rules",
+                card_loan_books: "Livrus: 3 simana / Books: 3 weeks",
+                card_loan_dvds: "DVDs: 1 simana / DVDs: 1 week",
+                card_loan_late: "Multa: $0.10 pa dia di atrasu / Late fee: $0.10 per day",
+                card_loan_renew: "Pode renova 2 vezis / Can renew 2 times",
+                modal_comp_title: "Komputador & WiFi / Computers & WiFi",
+                comp_stat: "WiFi grátis disponível durante tudu horariu. / Free WiFi available all day.",
+                comp_public: "Komputador Públiku / Public Computers",
+                comp_public1: "12 komputador disponível pa uzu públiku. / 12 computers available for public use.",
+                comp_public2: "Limitason di 2 óra pa seson (pode estendi si ninguém ta spera). / 2-hour session limit (can extend if no one is waiting).",
+                comp_public3: "Meste kartãu di biblioteka pa uza komputador. / Library card required to use computers.",
+                comp_public4: "Impreson: $0.10 pa pájina (preto i branku) / Printing: $0.10 per page (black and white).",
+                comp_public5: "Impreson a kor: $0.50 pa pájina. / Color printing: $0.50 per page.",
+                comp_wifi: "WiFi Grátis / Free WiFi",
+                comp_wifi1: "Rede: 'Biblioteka_Públika' / Network: 'Public_Library'",
+                comp_wifi2: "Senha: 'LerÉSaber2026' / Password: 'ReadIsKnow2026'",
+                comp_wifi3: "Disponível durante orariu di funsionamentu. / Available during open hours.",
+                comp_wifi4: "Neka uza rede pa aktividadi ilegál. / Do not use the network for illegal activities.",
+                comp_software: "Software Disponível / Available Software",
+                comp_help: "Ajudá di Informátika / Computer Help",
+                comp_help_desc: "Biblioteka oferese ajuda básika di informátika durante orariu di funsionamentu. Staff pode ajuda bu ku: / The library offers basic computer help during open hours. Staff can assist with:",
+                comp_help1: "Uzu di ratón i tecladu. / Mouse and keyboard use.",
+                comp_help2: "Kria un konta di email. / Creating an email account.",
+                comp_help3: "Buska na internet. / Internet searching.",
+                comp_help4: "Imprimi i skaneia dokumentu. / Printing and scanning documents.",
+                comp_help5: "Salva i organizá ficheiru. / Saving and organizing files.",
+                modal_events_title: "Eventus & Programa / Events & Programs",
+                events_stat: "Programa pa kriansa, adultus i idozus. / Programs for children, adults, and seniors.",
+                events_kids: "Programa pa Kriansa / Children’s Programs",
+                events_kids1: "Kontu di Stória (Terça i Quintu, 10:30 AM) / Storytime (Tuesdays & Thursdays, 10:30 AM)",
+                events_kids1_desc: "Kontu interativu i kantiga pa kriansa di 0-5 anu. / Interactive stories and songs for ages 0-5.",
+                events_kids2: "Klub di Arte (Sábadu, 11:00 AM) / Art Club (Saturdays, 11:00 AM)",
+                events_kids2_desc: "Atividadis di arte i artesanatu pa kriansa di 6-12 anu. / Arts and crafts for ages 6-12.",
+                events_kids3: "LEGO Klub (Quarta, 4:00 PM) / LEGO Club (Wednesdays, 4:00 PM)",
+                events_kids3_desc: "Konstrui i kria ku LEGO. / Build and create with LEGO.",
+                events_adults: "Programa pa Adultus / Adult Programs",
+                events_adults1: "Klub di Leitura (Segunda, 6:00 PM) / Book Club (Mondays, 6:00 PM)",
+                events_adults1_desc: "Diskuson mensal sobri un livru. Livrus disponível na Kriolu i Inglês. / Monthly discussion of a selected book. Books available in Kriolu and English.",
+                events_adults2: "Aula di Informátika (Terça i Quintu, 2:00 PM) / Computer Classes (Tuesdays & Thursdays, 2:00 PM)",
+                events_adults2_desc: "Aula básika di uzu di komputador, internet, i email. / Basic classes on computer use, internet, and email.",
+                events_adults3: "Aula di Inglês (Quarta i Sexta, 5:00 PM) / English Classes (Wednesdays & Fridays, 5:00 PM)",
+                events_adults3_desc: "Aula grátis di Inglês pa falantes di Kriolu. / Free English classes for Kriolu speakers.",
+                events_adults4: "Oficina di Kurrículu (Sábadu, 10:00 AM) / Resume Workshop (Saturdays, 10:00 AM)",
+                events_adults4_desc: "Aprende kum skribi un kurrículu i karta di kubikason. / Learn how to write a resume and cover letter.",
+                events_seniors: "Programa pa Idozus / Senior Programs",
+                events_seniors1: "Klub di Leitura pa Idozus (Quinta, 11:00 AM) / Senior Book Club (Thursdays, 11:00 AM)",
+                events_seniors1_desc: "Diskuson sobri livrus klassiku i kontemporâniu. / Discussion of classic and contemporary books.",
+                events_seniors2: "Jogu di Xadrez (Segunda i Quarta, 1:00 PM) / Chess Game (Mondays & Wednesdays, 1:00 PM)",
+                events_seniors2_desc: "Joga xadrez ku amigu i komunidadi. / Play chess with friends and community.",
+                events_cultural: "Eventus Kultural / Cultural Events",
+                events_cultural1: "Noiti di Música (Primeira Sexta di cada mes, 7:00 PM) / Music Night (First Friday of the month, 7:00 PM)",
+                events_cultural1_desc: "Konsertu ku música tradicional i moderna di Cabo Verde. / Concerts featuring traditional and modern Cape Verdean music.",
+                events_cultural2: "Noiti di Filmi (Sábadu, 3:00 PM) / Movie Night (Saturdays, 3:00 PM)",
+                events_cultural2_desc: "Filmi na Kriolu i Inglês ku subtítulo. / Movies in Kriolu and English with subtitles.",
+                events_cultural3: "Oficina di Kuzinha (Última Terça di cada mes, 4:00 PM) / Cooking Workshop (Last Tuesday of the month, 4:00 PM)",
+                events_cultural3_desc: "Aprende reseta tradicional di Cabo Verde. / Learn traditional Cape Verdean recipes.",
+                events_note: "Nota: Tudu eventus é grátis i abertu pa komunidadi. / All events are free and open to the community.",
+                events_note2: "Meste konsulta kalendáriu online pa atulizason. / Check the online calendar for updates.",
+                modal_rooms_title: "Sala di Estudu / Study Rooms",
+                rooms_stat: "Sala disponível pa grupu ou individuál. / Rooms available for groups or individuals.",
+                rooms_types: "Tipu di Sala / Room Types",
+                rooms_type1: "Sala Individuál (1-2 pesoa) / Individual Room (1-2 people)",
+                rooms_type2: "Sala di Grupu (3-6 pesoa) / Group Room (3-6 people)",
+                rooms_type3: "Sala ku Quadru Branku / Room with Whiteboard",
+                rooms_type4: "Sala ku TV / Room with TV",
+                rooms_how_to: "Kum é pa Reserva / How to Reserve",
+                rooms_step1: "Meste kartãu di biblioteka válidu. / Have a valid library card.",
+                rooms_step2: "Fasi reserva na balcão di informason ou ligá pa (555) 123-4567. / Make a reservation at the information desk or call (555) 123-4567.",
+                rooms_step3: "Reserva pode fasi 1 simana na frenti. / Reservations can be made up to 1 week in advance.",
+                rooms_step4: "Limitason di 2 óra pa reserva. / 2-hour limit per reservation.",
+                rooms_step5: "Si bu ta 15 minutu atrasadu, reserva pode sí anulá. / If you are 15 minutes late, your reservation may be canceled.",
+                rooms_rules: "Regra di Uzu / Usage Rules",
+                rooms_rule1: "Manten silénsiu na sala. / Keep noise to a minimum.",
+                rooms_rule2: "Neka komi ou bebi na sala. / No food or drinks allowed.",
+                rooms_rule3: "Neka fuma na sala. / No smoking.",
+                rooms_rule4: "Neka dexá sala desordená. / Do not leave the room messy.",
+                rooms_rule5: "Neka uza sala pa aktividadi komersial. / Do not use the room for commercial activities.",
+                rooms_equipment: "Ekipamentu Disponível / Available Equipment",
+                rooms_equip1: "Quadru branku i markador / Whiteboard and markers",
+                rooms_equip2: "TV ku HDMI / TV with HDMI",
+                rooms_equip3: "Tomada di korrenti / Power outlets",
+                rooms_equip4: "Acesu WiFi / WiFi access",
+                modal_lang_title: "Aprende Inglês / Kriolu / Learn English & Kriolu",
+                lang_stat: "Aula grátis di idioma pa komunidadi. / Free language classes for the community.",
+                lang_english: "Aula di Inglês / English Classes",
+                lang_english1: "Quarta i Sexta, 5:00 PM - 7:00 PM / Wednesdays & Fridays, 5:00 PM - 7:00 PM",
+                lang_english1_desc: "Aula pa inisianti i intermediáriu. / Classes for beginners and intermediate learners.",
+                lang_english2: "Klasis di 10-15 pesoa. / Class size: 10-15 people.",
+                lang_english3: "Materiais grátis. / Free materials provided.",
+                lang_english4: "Sertifikadu di partisipason. / Certificate of participation.",
+                lang_kriolu: "Aula di Kriolu / Kriolu Classes",
+                lang_kriolu1: "Segunda i Terça, 6:00 PM - 8:00 PM / Mondays & Tuesdays, 6:00 PM - 8:00 PM",
+                lang_kriolu1_desc: "Aula pa falantes di Inglês ki ker aprende Kriolu. / Classes for English speakers who want to learn Kriolu.",
+                lang_kriolu2: "Foku na Kriolu di Cabo Verde. / Focus on Cape Verdean Kriolu.",
+                lang_kriolu3: "Inklui música i kultura. / Includes music and culture.",
+                lang_conversation: "Sesons di Konversason / Conversation Sessions",
+                lang_conv1: "Sábadu, 10:00 AM - 12:00 PM / Saturdays, 10:00 AM - 12:00 PM",
+                lang_conv1_desc: "Praktika Inglês i Kriolu ku falantes nativu. / Practice English and Kriolu with native speakers.",
+                lang_conv2: "Kafé i Konversason (Quinta, 3:00 PM) / Coffee & Conversation (Thursdays, 3:00 PM)",
+                lang_conv2_desc: "Un seson informal pa praktika idioma. / Informal session to practice language.",
+                lang_resources: "Rekursu di Aprendizajen / Learning Resources",
+                lang_res1: "Livrus di Inglês pa inisianti / English books for beginners",
+                lang_res2: "Livrus di Kriolu / Kriolu books",
+                lang_res3: "Audiolivrus na Inglês i Kriolu / Audiobooks in English & Kriolu",
+                lang_res4: "Aplicativus: Duolingo, Memrise / Apps: Duolingo, Memrise",
+                lang_res5: "Site: BBC Learning English / Websites: BBC Learning English",
+                lang_res6: "Site: Kriolu Language Resources / Websites: Kriolu Language Resources",
+                lang_tutoring: "Ajudá Individual / One-on-One Help",
+                lang_tutoring_desc: "Biblioteka oferese sesons individual ku voluntáriu pa praktika Inglês i Kriolu. / The library offers one-on-one sessions with volunteers to practice English and Kriolu.",
+                lang_tutoring1: "Marca un orariu na balcão. / Schedule a time at the desk.",
+                lang_tutoring2: "Sesons di 30 minutu. / 30-minute sessions.",
+                modal_jobs_title: "Rekursu di Trabadju / Job Resources",
+                jobs_stat: "Apoiu pa buska trabadju, kurrículu, i entrevista. / Support for job search, resumes, and interviews.",
+                jobs_search: "Buska di Trabadju / Job Search",
+                jobs_search1: "Acesu a site di vaga: / Access to job listing sites:",
+                jobs_search2: "Jornal lokal ku anúnsiu di trabadju. / Local newspapers with job ads.",
+                jobs_search3: "Lista di kontatu di empresa lokal. / List of local company contacts.",
+                jobs_resume: "Kurrículu i Karta di Kubikason / Resume & Cover Letter",
+                jobs_resume1: "Oficina di Kurrículu (Sábadu, 10:00 AM) / Resume Workshop (Saturdays, 10:00 AM)",
+                jobs_resume1_desc: "Aprende kum skribi un kurrículu efikás. / Learn how to write an effective resume.",
+                jobs_resume2: "Impreson grátis di kurrículu i karta di kubikason. / Free printing of resumes and cover letters.",
+                jobs_resume3: "Livrus i guia pa skribi kurrículu. / Books and guides for writing resumes.",
+                jobs_resume4: "Template di kurrículu na komputador. / Resume templates on library computers.",
+                jobs_interview: "Preparason pa Entrevista / Interview Preparation",
+                jobs_interview1: "Simulason di Entrevista / Mock Interviews",
+                jobs_interview1_desc: "Praktika ku un staff di biblioteka pa prepará pa entrevista real. / Practice with library staff to prepare for real interviews.",
+                jobs_interview2: "Lista di perguntas komum na entrevista. / List of common interview questions.",
+                jobs_interview3: "Konselhu sobri vestuáriu pa entrevista. / Advice on interview attire.",
+                jobs_workshops: "Oficina i Sesons / Workshops & Sessions",
+                jobs_workshops1: "Oficina di Buska di Trabadju (Primeira Terça di cada mes, 2:00 PM) / Job Search Workshop (First Tuesday of the month, 2:00 PM)",
+                jobs_workshops1_desc: "Aprende estratejia pa buska trabadju. / Learn job search strategies.",
+                jobs_workshops2: "Seson di Networking (Última Quinta di cada mes, 6:00 PM) / Networking Session (Last Thursday of the month, 6:00 PM)",
+                jobs_workshops2_desc: "Konheci profissionál na túu área. / Meet professionals in your field.",
+                jobs_online: "Rekursu Online / Online Resources",
+                modal_health_title: "Informason di Saúde / Health Information",
+                health_stat: "Rekursu di saúde lokal i nacional. / Local and national health resources.",
+                health_portal: "Portal di Saúde na Kriolu / Health Portal in Kriolu",
+                health_portal_desc: "Biblioteka ten un portal di saúde komunidadi na Kriolu ku informason sobri:",
+                health_portal1: "Prevençon di doensa (COVID-19, gripi, i mais). / Disease prevention (COVID-19, flu, etc.).",
+                health_portal2: "Nutrisón i dieta sadia. / Nutrition and healthy diet.",
+                health_portal3: "Saúde di korason i diabéti. / Heart health and diabetes.",
+                health_portal4: "Saúde maternal i infantil. / Maternal and child health.",
+                health_portal5: "Medikamentu i receita. / Medications and prescriptions.",
+                health_portal6: "Servisu di saúde lokal. / Local health services.",
+                health_portal_link: "Visita Portal di Saúde Kriolu / Visit Kriolu Health Portal",
+                health_local: "Servisu di Saúde Lokal / Local Health Services",
+                health_local1: "Sentru di Saúde Komunitáriu / Community Health Center",
+                health_local2: "Klinika Grátis / Free Clinic",
+                health_local3: "Servisu di Emerjénsia / Emergency Services",
+                health_program: "Programa di Saúde / Health Programs",
+                health_program1: "Oficina di Nutrisón (Primeira Quarta di cada mes, 10:00 AM) / Nutrition Workshop (First Wednesday of the month, 10:00 AM)",
+                health_program1_desc: "Aprende kum prepará refeison sadia. / Learn how to prepare healthy meals.",
+                health_program2: "Aula di Ioga (Sábadu, 9:00 AM) / Yoga Class (Saturdays, 9:00 AM)",
+                health_program2_desc: "Ioga grátis pa tudu nível. / Free yoga for all levels.",
+                health_program3: "Testi di Saúde Grátis (Última Sexta di cada mes, 1:00 PM) / Free Health Screenings (Last Friday of the month, 1:00 PM)",
+                health_program3_desc: "Testi di presón, açukar, i kolesterol. / Blood pressure, sugar, and cholesterol screenings.",
+                health_mental: "Rekursu di Saúde Mental / Mental Health Resources",
+                health_mental1: "Linha di Apoiu 24/7 / 24/7 Support Hotline",
+                health_mental2: "Grupu di Apoiu / Support Groups",
+                health_mental2_desc: "Grupu di apoiu pa ansiedadi, depresón, i mais. / Support groups for anxiety, depression, and more.",
+                modal_policy_title: "Polítika & Regra / Policies & Rules",
+                policy_stat: "Ambienti siguru i respeitu mutuu. / Safe environment and mutual respect.",
+                policy_general: "Regra Jeneral / General Rules",
+                policy_general1: "Manten silénsiu na área di leitura. / Keep quiet in reading areas.",
+                policy_general2: "Pon telefoni na modu silénsiu. / Put phones on silent mode.",
+                policy_general3: "Neka komi ou bebi na área di livru. / No food or drinks in book areas.",
+                policy_general4: "Neka fuma na biblioteka. / No smoking in the library.",
+                policy_general5: "Neka leba animal di estimason (esetuanu: kaun di servisu). / No pets allowed (except service animals).",
+                policy_computer: "Regra pa Komputador / Computer Rules",
+                policy_comp1: "Limitason di 2 óra pa seson. / 2-hour session limit.",
+                policy_comp2: "Meste kartãu di biblioteka pa uza komputador. / Library card required to use computers.",
+                policy_comp3: "Neka acesa site ilegál ou inapropriádu. / Do not access illegal or inappropriate websites.",
+                policy_comp4: "Neka baixa software ou ficheiru ilegál. / Do not download illegal software or files.",
+                policy_comp5: "Paga impreson na balcão. / Pay for printing at the desk.",
+                policy_loan: "Regra di Empréstimu / Loan Rules",
+                policy_loan1: "Livrus: 3 simana (pode renova 2 vezis). / Books: 3 weeks (can renew 2 times).",
+                policy_loan2: "DVDs: 1 simana (pode renova 1 vez). / DVDs: 1 week (can renew 1 time).",
+                policy_loan3: "Multa: $0.10 pa dia di atrasu. / Late fee: $0.10 per day.",
+                policy_loan4: "Neka empresta kartãu di biblioteka pa outru. / Do not lend your library card to others.",
+                policy_loan5: "Bu é responsável pa material emprestádu. / You are responsible for borrowed materials.",
+                policy_behavior: "Konduta / Behavior",
+                policy_behavior1: "Trata funsionáriu i outru utente ku edukason. / Treat staff and other patrons with courtesy.",
+                policy_behavior2: "Neka asedia outru utente. / Do not harass other patrons.",
+                policy_behavior3: "Neka danifica propriedade di biblioteka. / Do not damage library property.",
+                policy_behavior4: "Biblioteka ten direitu di pidi pa utente ki ta violá regra pa saí. / The library reserves the right to ask violators to leave.",
+                policy_safety: "Seguransa / Safety",
+                policy_safety1: "Saída di emergénsia ta na parte trasera. / Emergency exits are at the rear.",
+                policy_safety2: "Extintor di fogo ta na parede na entrada. / Fire extinguishers are on the wall near the entrance.",
+                policy_safety3: "Kit di primeiru sokor ta na balcão. / First aid kit is at the desk.",
+                view_details: "Odja Detalhes / View Details",
+                install_app: "Instala App di Biblioteka / Install Library App",
+                modal_passport_title: "Servisu di Passaporti / Passport Services",
+                passport_stat: "Biblioteka ta oferese servisu di aplikason pa passaporti. / The library offers passport application services.",
+                passport_what: "Kos ki é oferesedu? / What's Offered",
+                passport_what1: "Aplikason pa passaporte Merkanu (livru i kartãu) / U.S. passport applications (book and card)",
+                passport_what2: "Servisu di fotografia pa passaporte / Passport photo service",
+                passport_what3: "Prosesamentu regular i aseleradu / Regular and expedited processing",
+                passport_what4: "Renovason di passaporte / Passport renewal",
+                passport_how_to: "Kum é pa apliká? / How to Apply",
+                passport_step1: "Fasi un markason 401-725-3714 x212. / Make an appointment by calling 401-725-3714 x212.",
+                passport_step2: "Meste dokumentu di sidadaia (sertifikadu di naskimentu ou naturalizason). / Bring citizenship evidence (birth certificate or naturalization certificate).",
+                passport_step3: "Meste un ID ku foto válidu (kartãu di motorista, ID di stadu, ou passaporte anterior). / Bring a valid photo ID (driver’s license, state ID, or previous passport).",
+                passport_step4: "Meste un kópia di ID (frente i tras). / Bring a photocopy of your ID (front and back).",
+                passport_step5: "Preenxi formuláriu DS-11 na biblioteka. / Fill out form DS-11 at the library.",
+                passport_step6: "Pagu taksa di aplikason i taksa di aseitamentu ku txekis separadu. / Pay the application fee and acceptance fee with separate checks.",
+                passport_fees: "Taksas / Fees",
+                passport_fee1: "Livru (adultu): $130 / Book (adult): $130",
+                passport_fee2: "Kartãu (adultu): $30 / Card (adult): $30",
+                passport_fee3: "Livru (kriansa): $100 / Book (child): $100",
+                passport_fee4: "Txeka di aseitamentu: $35 / Acceptance fee: $35",
+                passport_fees_note: "Pagu ten ki ser fasi ku txekis separadu pa 'U.S. Department of State' i pa 'Biblioteka Públika'. Neka aseita dinheru ou kartãu di kréditu. / Payment must be made with separate checks to 'U.S. Department of State' and 'Public Library'. No cash or credit cards.",
+                passport_why: "Pamodi é midjor fasi na biblioteka? / Why Apply at the Library?",
+                passport_why1: "Markason konvenienti, sen fila lonji. / Convenient appointments, no long lines.",
+                passport_why2: "Staff ta papiá Kriolu i Inglês pa ajuda bu. / Staff speaks Kriolu and English to assist you.",
+                passport_why3: "Fotografia disponível na lokál. / On‑site photo service available.",
+                passport_why4: "Apoiu pa verifiká dokumentu antis di envia. / Help reviewing your documents before submission.",
+                passport_note: "Nota: Prosesamentu normal pode dura 8-11 simana. Aseleradu (2-3 simana) disponível ku taksa adisional. / Note: Routine processing takes 8-11 weeks. Expedited (2-3 weeks) available for an additional fee.",
+                passport_note2: "Pa mais informason, ligá pa biblioteka ou visita travel.state.gov. / For more information, call the library or visit travel.state.gov."
+            },
+            en: {
+                page_title: "Public Library - Community Resources",
+                demo_welcome: "Welcome!",
+                demo_sub: "Library resources in Kriolu and English",
+                enter: "Enter",
+                main_title: "Public Library Services",
+                subhead: "Information in Kriolu and English for the whole community",
+                btn_card: "Library Card",
+                btn_computers: "Computers & WiFi",
+                btn_events: "Events & Programs",
+                btn_rooms: "Study Rooms",
+                btn_language: "Learn English / Kriolu",
+                btn_jobs: "Job Resources",
+                btn_health: "Health Information",
+                btn_policy: "Policies & Rules",
+                btn_passport: "Passports / Passaporti",
+                modal_card_title: "Library Card / Kartãu di Biblioteka",
+                card_stat: "Free card for all residents! / Kartãu grátis pa rezidentis!",
+                card_how_to: "How to Get a Card / Kum é pa konsigi un kartãu?",
+                card_step1: "Visit the library during open hours. / Pasa na biblioteka durante orariu di funsionamentu.",
+                card_step2: "Bring a photo ID (e.g., state ID, passport, or driver’s license). / Meste un ID ku foto (pa ex. kartãu di identifikason, passaporte, ou kartãu di motorista).",
+                card_step3: "Bring proof of address (e.g., utility bill, lease, or bank statement with address). / Meste un komprovativu di morada (pa ex. konta di luz, áwa, ou kartãu di banku ku morada).",
+                card_step4: "Fill out the registration form. / Preenxi formuláriu di inskriçon.",
+                card_step5: "Receive your library card immediately. / Recebi kartãu di biblioteka na ora.",
+                card_benefits: "What Can You Do with a Card? / Kosa bu pode fasi ku kartãu?",
+                card_benefit1: "Borrow books, DVDs, and music CDs. / Empresta livrus, DVDs, i CD di música.",
+                card_benefit2: "Use library computers and printers. / Uza komputador i impresora na biblioteka.",
+                card_benefit3: "Access free WiFi. / Acesa WiFi grátis.",
+                card_benefit4: "Access online resources (e-books, audiobooks, and more). / Acesa rekursu online (e-books, audiolivrus, i mais).",
+                card_benefit5: "Participate in events and programs. / Partisipa na eventus i programa.",
+                card_benefit6: "Reserve study rooms. / Reserva sala di estudu.",
+                card_loan: "Loan Rules / Regra di Empréstimu",
+                card_loan_books: "Books: 3 weeks / Livrus: 3 simana",
+                card_loan_dvds: "DVDs: 1 week / DVDs: 1 simana",
+                card_loan_late: "Late fee: $0.10 per day / Multa: $0.10 pa dia di atrasu",
+                card_loan_renew: "Can renew 2 times / Pode renova 2 vezis",
+                modal_comp_title: "Computers & WiFi / Komputador & WiFi",
+                comp_stat: "Free WiFi available all day. / WiFi grátis disponível durante tudu horariu.",
+                comp_public: "Public Computers / Komputador Públiku",
+                comp_public1: "12 computers available for public use. / 12 komputador disponível pa uzu públiku.",
+                comp_public2: "2-hour session limit (can extend if no one is waiting). / Limitason di 2 óra pa seson (pode estendi si ninguém ta spera).",
+                comp_public3: "Library card required to use computers. / Meste kartãu di biblioteka pa uza komputador.",
+                comp_public4: "Printing: $0.10 per page (black and white). / Impreson: $0.10 pa pájina (preto i branku).",
+                comp_public5: "Color printing: $0.50 per page. / Impreson a kor: $0.50 pa pájina.",
+                comp_wifi: "Free WiFi / WiFi Grátis",
+                comp_wifi1: "Network: 'Public_Library' / Rede: 'Biblioteka_Públika'",
+                comp_wifi2: "Password: 'ReadIsKnow2026' / Senha: 'LerÉSaber2026'",
+                comp_wifi3: "Available during open hours. / Disponível durante orariu di funsionamentu.",
+                comp_wifi4: "Do not use the network for illegal activities. / Neka uza rede pa aktividadi ilegál.",
+                comp_software: "Available Software / Software Disponível",
+                comp_help: "Computer Help / Ajudá di Informátika",
+                comp_help_desc: "The library offers basic computer help during open hours. Staff can assist with: / Biblioteka oferese ajuda básika di informátika durante orariu di funsionamentu. Staff pode ajuda bu ku:",
+                comp_help1: "Mouse and keyboard use. / Uzu di ratón i tecladu.",
+                comp_help2: "Creating an email account. / Kria un konta di email.",
+                comp_help3: "Internet searching. / Buska na internet.",
+                comp_help4: "Printing and scanning documents. / Imprimi i skaneia dokumentu.",
+                comp_help5: "Saving and organizing files. / Salva i organizá ficheiru.",
+                modal_events_title: "Events & Programs / Eventus & Programa",
+                events_stat: "Programs for children, adults, and seniors. / Programa pa kriansa, adultus i idozus.",
+                events_kids: "Children’s Programs / Programa pa Kriansa",
+                events_kids1: "Storytime (Tuesdays & Thursdays, 10:30 AM) / Kontu di Stória (Terça i Quintu, 10:30 AM)",
+                events_kids1_desc: "Interactive stories and songs for ages 0-5. / Kontu interativu i kantiga pa kriansa di 0-5 anu.",
+                events_kids2: "Art Club (Saturdays, 11:00 AM) / Klub di Arte (Sábadu, 11:00 AM)",
+                events_kids2_desc: "Arts and crafts for ages 6-12. / Atividadis di arte i artesanatu pa kriansa di 6-12 anu.",
+                events_kids3: "LEGO Club (Wednesdays, 4:00 PM) / LEGO Klub (Quarta, 4:00 PM)",
+                events_kids3_desc: "Build and create with LEGO. / Konstrui i kria ku LEGO.",
+                events_adults: "Adult Programs / Programa pa Adultus",
+                events_adults1: "Book Club (Mondays, 6:00 PM) / Klub di Leitura (Segunda, 6:00 PM)",
+                events_adults1_desc: "Monthly discussion of a selected book. Books available in Kriolu and English. / Diskuson mensal sobri un livru. Livrus disponível na Kriolu i Inglês.",
+                events_adults2: "Computer Classes (Tuesdays & Thursdays, 2:00 PM) / Aula di Informátika (Terça i Quintu, 2:00 PM)",
+                events_adults2_desc: "Basic classes on computer use, internet, and email. / Aula básika di uzu di komputador, internet, i email.",
+                events_adults3: "English Classes (Wednesdays & Fridays, 5:00 PM) / Aula di Inglês (Quarta i Sexta, 5:00 PM)",
+                events_adults3_desc: "Free English classes for Kriolu speakers. / Aula grátis di Inglês pa falantes di Kriolu.",
+                events_adults4: "Resume Workshop (Saturdays, 10:00 AM) / Oficina di Kurrículu (Sábadu, 10:00 AM)",
+                events_adults4_desc: "Learn how to write a resume and cover letter. / Aprende kum skribi un kurrículu i karta di kubikason.",
+                events_seniors: "Senior Programs / Programa pa Idozus",
+                events_seniors1: "Senior Book Club (Thursdays, 11:00 AM) / Klub di Leitura pa Idozus (Quinta, 11:00 AM)",
+                events_seniors1_desc: "Discussion of classic and contemporary books. / Diskuson sobri livrus klassiku i kontemporâniu.",
+                events_seniors2: "Chess Game (Mondays & Wednesdays, 1:00 PM) / Jogu di Xadrez (Segunda i Quarta, 1:00 PM)",
+                events_seniors2_desc: "Play chess with friends and community. / Joga xadrez ku amigu i komunidadi.",
+                events_cultural: "Cultural Events / Eventus Kultural",
+                events_cultural1: "Music Night (First Friday of the month, 7:00 PM) / Noiti di Música (Primeira Sexta di cada mes, 7:00 PM)",
+                events_cultural1_desc: "Concerts featuring traditional and modern Cape Verdean music. / Konsertu ku música tradicional i moderna di Cabo Verde.",
+                events_cultural2: "Movie Night (Saturdays, 3:00 PM) / Noiti di Filmi (Sábadu, 3:00 PM)",
+                events_cultural2_desc: "Movies in Kriolu and English with subtitles. / Filmi na Kriolu i Inglês ku subtítulo.",
+                events_cultural3: "Cooking Workshop (Last Tuesday of the month, 4:00 PM) / Oficina di Kuzinha (Última Terça di cada mes, 4:00 PM)",
+                events_cultural3_desc: "Learn traditional Cape Verdean recipes. / Aprende reseta tradicional di Cabo Verde.",
+                events_note: "Note: All events are free and open to the community. / Nota: Tudu eventus é grátis i abertu pa komunidadi.",
+                events_note2: "Check the online calendar for updates. / Meste konsulta kalendáriu online pa atulizason.",
+                modal_rooms_title: "Study Rooms / Sala di Estudu",
+                rooms_stat: "Rooms available for groups or individuals. / Sala disponível pa grupu ou individuál.",
+                rooms_types: "Room Types / Tipu di Sala",
+                rooms_type1: "Individual Room (1-2 people) / Sala Individuál (1-2 pesoa)",
+                rooms_type2: "Group Room (3-6 people) / Sala di Grupu (3-6 pesoa)",
+                rooms_type3: "Room with Whiteboard / Sala ku Quadru Branku",
+                rooms_type4: "Room with TV / Sala ku TV",
+                rooms_how_to: "How to Reserve / Kum é pa Reserva",
+                rooms_step1: "Have a valid library card. / Meste kartãu di biblioteka válidu.",
+                rooms_step2: "Make a reservation at the information desk or call (555) 123-4567. / Fasi reserva na balcão di informason ou ligá pa (555) 123-4567.",
+                rooms_step3: "Reservations can be made up to 1 week in advance. / Reserva pode fasi 1 simana na frenti.",
+                rooms_step4: "2-hour limit per reservation. / Limitason di 2 óra pa reserva.",
+                rooms_step5: "If you are 15 minutes late, your reservation may be canceled. / Si bu ta 15 minutu atrasadu, reserva pode sí anulá.",
+                rooms_rules: "Usage Rules / Regra di Uzu",
+                rooms_rule1: "Keep noise to a minimum. / Manten silénsiu na sala.",
+                rooms_rule2: "No food or drinks allowed. / Neka komi ou bebi na sala.",
+                rooms_rule3: "No smoking. / Neka fuma na sala.",
+                rooms_rule4: "Do not leave the room messy. / Neka dexá sala desordená.",
+                rooms_rule5: "Do not use the room for commercial activities. / Neka uza sala pa aktividadi komersial.",
+                rooms_equipment: "Available Equipment / Ekipamentu Disponível",
+                rooms_equip1: "Whiteboard and markers / Quadru branku i markador",
+                rooms_equip2: "TV with HDMI / TV ku HDMI",
+                rooms_equip3: "Power outlets / Tomada di korrenti",
+                rooms_equip4: "WiFi access / Acesu WiFi",
+                modal_lang_title: "Learn English & Kriolu / Aprende Inglês / Kriolu",
+                lang_stat: "Free language classes for the community. / Aula grátis di idioma pa komunidadi.",
+                lang_english: "English Classes / Aula di Inglês",
+                lang_english1: "Wednesdays & Fridays, 5:00 PM - 7:00 PM / Quarta i Sexta, 5:00 PM - 7:00 PM",
+                lang_english1_desc: "Classes for beginners and intermediate learners. / Aula pa inisianti i intermediáriu.",
+                lang_english2: "Class size: 10-15 people. / Klasis di 10-15 pesoa.",
+                lang_english3: "Free materials provided. / Materiais grátis.",
+                lang_english4: "Certificate of participation. / Sertifikadu di partisipason.",
+                lang_kriolu: "Kriolu Classes / Aula di Kriolu",
+                lang_kriolu1: "Mondays & Tuesdays, 6:00 PM - 8:00 PM / Segunda i Terça, 6:00 PM - 8:00 PM",
+                lang_kriolu1_desc: "Classes for English speakers who want to learn Kriolu. / Aula pa falantes di Inglês ki ker aprende Kriolu.",
+                lang_kriolu2: "Focus on Cape Verdean Kriolu. / Foku na Kriolu di Cabo Verde.",
+                lang_kriolu3: "Includes music and culture. / Inklui música i kultura.",
+                lang_conversation: "Conversation Sessions / Sesons di Konversason",
+                lang_conv1: "Saturdays, 10:00 AM - 12:00 PM / Sábadu, 10:00 AM - 12:00 PM",
+                lang_conv1_desc: "Practice English and Kriolu with native speakers. / Praktika Inglês i Kriolu ku falantes nativu.",
+                lang_conv2: "Coffee & Conversation (Thursdays, 3:00 PM) / Kafé i Konversason (Quinta, 3:00 PM)",
+                lang_conv2_desc: "Informal session to practice language. / Un seson informal pa praktika idioma.",
+                lang_resources: "Learning Resources / Rekursu di Aprendizajen",
+                lang_res1: "English books for beginners / Livrus di Inglês pa inisianti",
+                lang_res2: "Kriolu books / Livrus di Kriolu",
+                lang_res3: "Audiobooks in English & Kriolu / Audiolivrus na Inglês i Kriolu",
+                lang_res4: "Apps: Duolingo, Memrise / Aplicativus: Duolingo, Memrise",
+                lang_res5: "Websites: BBC Learning English / Site: BBC Learning English",
+                lang_res6: "Websites: Kriolu Language Resources / Site: Kriolu Language Resources",
+                lang_tutoring: "One-on-One Help / Ajudá Individual",
+                lang_tutoring_desc: "The library offers one-on-one sessions with volunteers to practice English and Kriolu. / Biblioteka oferese sesons individual ku voluntáriu pa praktika Inglês i Kriolu.",
+                lang_tutoring1: "Schedule a time at the desk. / Marca un orariu na balcão.",
+                lang_tutoring2: "30-minute sessions. / Sesons di 30 minutu.",
+                modal_jobs_title: "Job Resources / Rekursu di Trabadju",
+                jobs_stat: "Support for job search, resumes, and interviews. / Apoiu pa buska trabadju, kurrículu, i entrevista.",
+                jobs_search: "Job Search / Buska di Trabadju",
+                jobs_search1: "Access to job listing sites: / Acesu a site di vaga:",
+                jobs_search2: "Local newspapers with job ads. / Jornal lokal ku anúnsiu di trabadju.",
+                jobs_search3: "List of local company contacts. / Lista di kontatu di empresa lokal.",
+                jobs_resume: "Resume & Cover Letter / Kurrículu i Karta di Kubikason",
+                jobs_resume1: "Resume Workshop (Saturdays, 10:00 AM) / Oficina di Kurrículu (Sábadu, 10:00 AM)",
+                jobs_resume1_desc: "Learn how to write an effective resume. / Aprende kum skribi un kurrículu efikás.",
+                jobs_resume2: "Free printing of resumes and cover letters. / Impreson grátis di kurrículu i karta di kubikason.",
+                jobs_resume3: "Books and guides for writing resumes. / Livrus i guia pa skribi kurrículu.",
+                jobs_resume4: "Resume templates on library computers. / Template di kurrículu na komputador.",
+                jobs_interview: "Interview Preparation / Preparason pa Entrevista",
+                jobs_interview1: "Mock Interviews / Simulason di Entrevista",
+                jobs_interview1_desc: "Practice with library staff to prepare for real interviews. / Praktika ku un staff di biblioteka pa prepará pa entrevista real.",
+                jobs_interview2: "List of common interview questions. / Lista di perguntas komum na entrevista.",
+                jobs_interview3: "Advice on interview attire. / Konselhu sobri vestuáriu pa entrevista.",
+                jobs_workshops: "Workshops & Sessions / Oficina i Sesons",
+                jobs_workshops1: "Job Search Workshop (First Tuesday of the month, 2:00 PM) / Oficina di Buska di Trabadju (Primeira Terça di cada mes, 2:00 PM)",
+                jobs_workshops1_desc: "Learn job search strategies. / Aprende estratejia pa buska trabadju.",
+                jobs_workshops2: "Networking Session (Last Thursday of the month, 6:00 PM) / Seson di Networking (Última Quinta di cada mes, 6:00 PM)",
+                jobs_workshops2_desc: "Meet professionals in your field. / Konheci profissionál na túu área.",
+                jobs_online: "Online Resources / Rekursu Online",
+                modal_health_title: "Health Information / Informason di Saúde",
+                health_stat: "Local and national health resources. / Rekursu di saúde lokal i nacional.",
+                health_portal: "Health Portal in Kriolu / Portal di Saúde na Kriolu",
+                health_portal_desc: "The library has a community health portal in Kriolu with information about:",
+                health_portal1: "Disease prevention (COVID-19, flu, etc.). / Prevençon di doensa (COVID-19, gripi, i mais).",
+                health_portal2: "Nutrition and healthy diet. / Nutrisón i dieta sadia.",
+                health_portal3: "Heart health and diabetes. / Saúde di korason i diabéti.",
+                health_portal4: "Maternal and child health. / Saúde maternal i infantil.",
+                health_portal5: "Medications and prescriptions. / Medikamentu i receita.",
+                health_portal6: "Local health services. / Servisu di saúde lokal.",
+                health_portal_link: "Visit Kriolu Health Portal / Visita Portal di Saúde Kriolu",
+                health_local: "Local Health Services / Servisu di Saúde Lokal",
+                health_local1: "Community Health Center / Sentru di Saúde Komunitáriu",
+                health_local2: "Free Clinic / Klinika Grátis",
+                health_local3: "Emergency Services / Servisu di Emerjénsia",
+                health_program: "Health Programs / Programa di Saúde",
+                health_program1: "Nutrition Workshop (First Wednesday of the month, 10:00 AM) / Oficina di Nutrisón (Primeira Quarta di cada mes, 10:00 AM)",
+                health_program1_desc: "Learn how to prepare healthy meals. / Aprende kum prepará refeison sadia.",
+                health_program2: "Yoga Class (Saturdays, 9:00 AM) / Aula di Ioga (Sábadu, 9:00 AM)",
+                health_program2_desc: "Free yoga for all levels. / Ioga grátis pa tudu nível.",
+                health_program3: "Free Health Screenings (Last Friday of the month, 1:00 PM) / Testi di Saúde Grátis (Última Sexta di cada mes, 1:00 PM)",
+                health_program3_desc: "Blood pressure, sugar, and cholesterol screenings. / Testi di presón, açukar, i kolesterol.",
+                health_mental: "Mental Health Resources / Rekursu di Saúde Mental",
+                health_mental1: "24/7 Support Hotline / Linha di Apoiu 24/7",
+                health_mental2: "Support Groups / Grupu di Apoiu",
+                health_mental2_desc: "Support groups for anxiety, depression, and more. / Grupu di apoiu pa ansiedadi, depresón, i mais.",
+                modal_policy_title: "Policies & Rules / Polítika & Regra",
+                policy_stat: "Safe environment and mutual respect. / Ambienti siguru i respeitu mutuu.",
+                policy_general: "General Rules / Regra Jeneral",
+                policy_general1: "Keep quiet in reading areas. / Manten silénsiu na área di leitura.",
+                policy_general2: "Put phones on silent mode. / Pon telefoni na modu silénsiu.",
+                policy_general3: "No food or drinks in book areas. / Neka komi ou bebi na área di livru.",
+                policy_general4: "No smoking in the library. / Neka fuma na biblioteka.",
+                policy_general5: "No pets allowed (except service animals). / Neka leba animal di estimason (esetuanu: kaun di servisu).",
+                policy_computer: "Computer Rules / Regra pa Komputador",
+                policy_comp1: "2-hour session limit. / Limitason di 2 óra pa seson.",
+                policy_comp2: "Library card required to use computers. / Meste kartãu di biblioteka pa uza komputador.",
+                policy_comp3: "Do not access illegal or inappropriate websites. / Neka acesa site ilegál ou inapropriádu.",
+                policy_comp4: "Do not download illegal software or files. / Neka baixa software ou ficheiru ilegál.",
+                policy_comp5: "Pay for printing at the desk. / Paga impreson na balcão.",
+                policy_loan: "Loan Rules / Regra di Empréstimu",
+                policy_loan1: "Books: 3 weeks (can renew 2 times). / Livrus: 3 simana (pode renova 2 vezis).",
+                policy_loan2: "DVDs: 1 week (can renew 1 time). / DVDs: 1 simana (pode renova 1 vez).",
+                policy_loan3: "Late fee: $0.10 per day. / Multa: $0.10 pa dia di atrasu.",
+                policy_loan4: "Do not lend your library card to others. / Neka empresta kartãu di biblioteka pa outru.",
+                policy_loan5: "You are responsible for borrowed materials. / Bu é responsável pa material emprestádu.",
+                policy_behavior: "Behavior / Konduta",
+                policy_behavior1: "Treat staff and other patrons with courtesy. / Trata funsionáriu i outru utente ku edukason.",
+                policy_behavior2: "Do not harass other patrons. / Neka asedia outru utente.",
+                policy_behavior3: "Do not damage library property. / Neka danifica propriedade di biblioteka.",
+                policy_behavior4: "The library reserves the right to ask violators to leave. / Biblioteka ten direitu di pidi pa utente ki ta violá regra pa saí.",
+                policy_safety: "Safety / Seguransa",
+                policy_safety1: "Emergency exits are at the rear. / Saída di emergénsia ta na parte trasera.",
+                policy_safety2: "Fire extinguishers are on the wall near the entrance. / Extintor di fogo ta na parede na entrada.",
+                policy_safety3: "First aid kit is at the desk. / Kit di primeiru sokor ta na balcão.",
+                view_details: "View Details / Odja Detalhes",
+                install_app: "Install Library App / Instala App di Biblioteka",
+                modal_passport_title: "Passport Services / Servisu di Passaporti",
+                passport_stat: "The library offers passport application services. / Biblioteka ta oferese servisu di aplikason pa passaporti.",
+                passport_what: "What's Offered / Kos ki é oferesedu?",
+                passport_what1: "U.S. passport applications (book and card) / Aplikason pa passaporte Merkanu (livru i kartãu)",
+                passport_what2: "Passport photo service / Servisu di fotografia pa passaporte",
+                passport_what3: "Regular and expedited processing / Prosesamentu regular i aseleradu",
+                passport_what4: "Passport renewal / Renovason di passaporte",
+                passport_how_to: "How to Apply / Kum é pa apliká?",
+                passport_step1: "Make an appointment by calling 401-725-3714 x212. / Fasi un markason 401-725-3714 x212.",
+                passport_step2: "Bring citizenship evidence (birth certificate or naturalization certificate). / Meste dokumentu di sidadaia (sertifikadu di naskimentu ou naturalizason).",
+                passport_step3: "Bring a valid photo ID (driver’s license, state ID, or previous passport). / Meste un ID ku foto válidu (kartãu di motorista, ID di stadu, ou passaporte anterior).",
+                passport_step4: "Bring a photocopy of your ID (front and back). / Meste un kópia di ID (frente i tras).",
+                passport_step5: "Fill out form DS-11 at the library. / Preenxi formuláriu DS-11 na biblioteka.",
+                passport_step6: "Pay the application fee and acceptance fee with separate checks. / Pagu taksa di aplikason i taksa di aseitamentu ku txekis separadu.",
+                passport_fees: "Fees / Taksas",
+                passport_fee1: "Book (adult): $130 / Livru (adultu): $130",
+                passport_fee2: "Card (adult): $30 / Kartãu (adultu): $30",
+                passport_fee3: "Book (child): $100 / Livru (kriansa): $100",
+                passport_fee4: "Acceptance fee: $35 / Txeka di aseitamentu: $35",
+                passport_fees_note: "Payment must be made with separate checks to 'U.S. Department of State' and 'Public Library'. No cash or credit cards. / Pagu ten ki ser fasi ku txekis separadu pa 'U.S. Department of State' i pa 'Biblioteka Públika'. Neka aseita dinheru ou kartãu di kréditu.",
+                passport_why: "Why Apply at the Library? / Pamodi é midjor fasi na biblioteka?",
+                passport_why1: "Convenient appointments, no long lines. / Markason konvenienti, sen fila lonji.",
+                passport_why2: "Staff speaks Kriolu and English to assist you. / Staff ta papiá Kriolu i Inglês pa ajuda bu.",
+                passport_why3: "On‑site photo service available. / Fotografia disponível na lokál.",
+                passport_why4: "Help reviewing your documents before submission. / Apoiu pa verifiká dokumentu antis di envia.",
+                passport_note: "Note: Routine processing takes 8-11 weeks. Expedited (2-3 weeks) available for an additional fee. / Nota: Prosesamentu normal pode dura 8-11 simana. Aseleradu (2-3 simana) disponível ku taksa adisional.",
+                passport_note2: "For more information, call the library or visit travel.state.gov. / Pa mais informason, ligá pa biblioteka ou visita travel.state.gov."
+            }
+        };
+
+        const imageModals = [
+            { id: 'cardImageModal', title: 'Library Card Info / Informason di Kartãu di Biblioteka', icon: 'fa-id-card', img: '1.png' },
+            { id: 'compImageModal', title: 'Computers & WiFi Info / Informason di Komputador & WiFi', icon: 'fa-desktop', img: '2.png' },
+            { id: 'eventsImageModal', title: 'Events Info / Informason di Eventus', icon: 'fa-calendar-alt', img: '3.png' },
+            { id: 'roomsImageModal', title: 'Study Rooms Info / Informason di Sala di Estudu', icon: 'fa-door-open', img: '4.png' },
+            { id: 'langImageModal', title: 'Language Learning Info / Informason di Aprendizajen di Lingua', icon: 'fa-language', img: '5.png' },
+            { id: 'jobsImageModal', title: 'Job Resources Info / Informason di Rekursu di Trabadju', icon: 'fa-briefcase', img: '6.png' },
+            { id: 'healthImageModal', title: 'Health Info / Informason di Saúde', icon: 'fa-heartbeat', img: '7.png' },
+            { id: 'policyImageModal', title: 'Policies Info / Informason di Polítika', icon: 'fa-shield-alt', img: '8.png' },
+            { id: 'passportImageModal', title: 'Passport Services Info / Informason di Servisu di Passaporti', icon: 'fa-passport', img: '9.png' }
+        ];
+
+        const container = document.getElementById('imageModalsContainer');
+        imageModals.forEach(m => {
+            const modalDiv = document.createElement('div');
+            modalDiv.className = 'modal-overlay image-modal';
+            modalDiv.id = m.id;
+            modalDiv.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header"><h2><i class="fas ${m.icon}"></i> ${m.title}</h2><button class="close-modal close-btn">&times;</button></div>
+                    <div class="modal-body">
+                        <img src="${m.img}" alt="${m.title}" class="modal-image" onerror="this.style.display='none'">
+                        <p style="text-align:center; margin-top:1rem;">For more information, please visit or call the library. / Pa mais informason, visita ou ligá pa biblioteka.</p>
+                    </div>
+                </div>
+            `;
+            container.appendChild(modalDiv);
+        });
+
+        // Demo overlay
+        const demoOverlay = document.getElementById('demoOverlay');
+        document.getElementById('demoCloseBtn').addEventListener('click', () => demoOverlay.classList.add('hidden'));
+        document.getElementById('demoReopenBtn').addEventListener('click', () => demoOverlay.classList.remove('hidden'));
+
+        // Language switcher
+        const langBtn = document.getElementById('langBtn');
+        const langDropdown = document.getElementById('langDropdown');
+        const currentLangSpan = document.getElementById('current-lang-label');
+        let currentLang = 'kea';
+
+        langBtn.addEventListener('click', (e) => { e.stopPropagation(); langDropdown.classList.toggle('show'); });
+        document.addEventListener('click', (e) => {
+            if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) langDropdown.classList.remove('show');
+        });
+
+        function setLanguage(langCode) {
+            const langNames = { kea: "Kriolu (Cabo Verde)", en: "English" };
+            currentLangSpan.textContent = langNames[langCode];
+            currentLang = langCode;
+            const t = translations[langCode] || translations.kea;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key] !== undefined) el.textContent = t[key];
+            });
+            document.documentElement.lang = langCode;
+            langDropdown.classList.remove('show');
+            localStorage.setItem('preferred-language', langCode);
+        }
+
+        document.querySelectorAll('.lang-dropdown a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                setLanguage(link.getAttribute('data-lang'));
+            });
+        });
+
+        const savedLang = localStorage.getItem('preferred-language') || 'kea';
+        setLanguage(savedLang);
+
+        // Modal logic
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) { modal.classList.add('active'); document.body.style.overflow = 'hidden'; }
+        }
+        function closeModal(modal) { modal.classList.remove('active'); document.body.style.overflow = ''; }
+
+        document.querySelectorAll('[data-modal]').forEach(btn => {
+            btn.addEventListener('click', () => openModal(btn.getAttribute('data-modal')));
+        });
+        document.querySelectorAll('[data-image-modal]').forEach(btn => {
+            btn.addEventListener('click', (e) => { e.stopPropagation(); openModal(btn.getAttribute('data-image-modal')); });
+        });
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('close-modal') || e.target.closest('.close-modal')) {
+                const modal = e.target.closest('.modal-overlay');
+                if (modal) closeModal(modal);
+            }
+            if (e.target.classList.contains('modal-overlay')) closeModal(e.target);
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(m => closeModal(m));
+        });
+
+        // Accessibility
+        const bodyEl = document.body;
+        const largeTextBtn = document.getElementById('a11y-large-text');
+        const highContrastBtn = document.getElementById('a11y-high-contrast');
+
+        function updateA11yButtons() {
+            largeTextBtn.classList.toggle('active', bodyEl.classList.contains('large-text'));
+            highContrastBtn.classList.toggle('active', bodyEl.classList.contains('high-contrast'));
+            localStorage.setItem('a11y-large-text', bodyEl.classList.contains('large-text'));
+            localStorage.setItem('a11y-high-contrast', bodyEl.classList.contains('high-contrast'));
+        }
+
+        largeTextBtn.addEventListener('click', () => { bodyEl.classList.toggle('large-text'); updateA11yButtons(); });
+        highContrastBtn.addEventListener('click', () => { bodyEl.classList.toggle('high-contrast'); updateA11yButtons(); });
+
+        if (localStorage.getItem('a11y-large-text') === 'true') bodyEl.classList.add('large-text');
+        if (localStorage.getItem('a11y-high-contrast') === 'true') bodyEl.classList.add('high-contrast');
+        updateA11yButtons();
+
+        // PWA
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('pwaInstallBanner').style.display = 'block';
+        });
+        document.getElementById('pwaInstallBanner').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                await deferredPrompt.userChoice;
+                document.getElementById('pwaInstallBanner').style.display = 'none';
+                deferredPrompt = null;
+            }
+        });
+    </script>
+</body>
+</html>
